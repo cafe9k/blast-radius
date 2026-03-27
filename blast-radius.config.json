@@ -1,0 +1,30 @@
+{
+  "scan": {
+    "include": ["src/**/*.{ts,tsx,jsx}"],
+    "exclude": [
+      "node_modules/**",
+      "**/*.test.{ts,tsx}",
+      "**/*.spec.{ts,tsx}",
+      "**/__tests__/**",
+      "**/*.d.ts",
+      "**/dist/**",
+      "**/build/**"
+    ]
+  },
+  "analysis": {
+    "depth": "full",
+    "enableCache": true,
+    "cacheDir": ".blast-radius/cache"
+  },
+  "llm": {
+    "provider": "openai",
+    "model": "gpt-4",
+    "apiKey": "${OPENAI_API_KEY}",
+    "baseUrl": null,
+    "enableCache": true
+  },
+  "output": {
+    "format": ["html", "json"],
+    "openBrowser": true
+  }
+}

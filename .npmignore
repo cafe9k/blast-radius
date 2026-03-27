@@ -1,0 +1,33 @@
+# Source files
+src/
+app/src/
+
+# Config files
+tsconfig.json
+tsup.config.ts
+.eslintrc.*
+.prettierrc*
+
+# Test files
+__tests__/
+*.test.ts
+*.spec.ts
+coverage/
+
+# Development files
+.gitignore
+.DS_Store
+*.log
+
+# Documentation
+README.md
+CHANGELOG.md
+LICENSE
+
+# Cache
+.blast-radius/
+.cache/
+
+# Environment
+.env
+.env.*

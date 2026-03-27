@@ -1,0 +1,70 @@
+{
+  "name": "blast-radius",
+  "version": "1.0.0",
+  "description": "Analyze component dependency relationships and blast radius in React projects",
+  "type": "module",
+  "bin": {
+    "blast-radius": "./dist/index.js"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist",
+    "app/dist"
+  ],
+  "scripts": {
+    "dev": "tsup --watch",
+    "build": "tsup",
+    "build:app": "cd app && pnpm build",
+    "build:all": "pnpm build && pnpm build:app",
+    "test": "vitest",
+    "test:coverage": "vitest --coverage",
+    "lint": "eslint src --ext .ts,.tsx",
+    "typecheck": "tsc --noEmit",
+    "prepublishOnly": "pnpm build:all"
+  },
+  "keywords": [
+    "react",
+    "dependency",
+    "blast-radius",
+    "visualization",
+    "code-analysis",
+    "cli"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@babel/parser": "^7.24.0",
+    "@babel/traverse": "^7.24.0",
+    "chalk": "^5.3.0",
+    "commander": "^12.0.0",
+    "enhanced-resolve": "^5.27.0",
+    "fast-glob": "^3.3.2",
+    "fs-extra": "^11.2.0",
+    "graphology": "^0.25.4",
+    "graphology-layout": "^0.6.1",
+    "graphology-layout-force": "^0.2.4",
+    "ora": "^8.0.1",
+    "open": "^10.1.0"
+  },
+  "devDependencies": {
+    "@types/babel__traverse": "^7.20.5",
+    "@types/fs-extra": "^11.0.4",
+    "@types/node": "^20.11.0",
+    "tsup": "^8.0.2",
+    "type-fest": "^4.10.0",
+    "typescript": "^5.4.0",
+    "vitest": "^1.3.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/qing/blast-radius.git"
+  },
+  "bugs": {
+    "url": "https://github.com/qing/blast-radius/issues"
+  },
+  "homepage": "https://github.com/qing/blast-radius#readme"
+}
