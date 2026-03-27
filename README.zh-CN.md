@@ -180,6 +180,8 @@ sequenceDiagram
 
 ## 📦 安装
 
+### 从 npm 安装（推荐）
+
 ```bash
 # 全局安装
 npm install -g blast-radius
@@ -187,6 +189,37 @@ npm install -g blast-radius
 # 或使用 npx
 npx blast-radius analyze
 ```
+
+### 本地开发测试
+
+如果要在发布前进行本地测试：
+
+```bash
+# 克隆仓库
+git clone https://github.com/qing/blast-radius.git
+cd blast-radius
+
+# 安装依赖
+pnpm install
+
+# 构建项目
+pnpm build
+
+# 方式 1: 使用 npm link（推荐）
+npm link
+blast-radius analyze  # 现在可以全局使用了
+
+# 方式 2: 直接运行
+node dist/index.js analyze
+
+# 方式 3: 安装到全局
+npm install -g .
+
+# 测试完成后取消链接
+npm unlink -g blast-radius
+```
+
+**注意：** 本项目使用 TypeScript 路径别名（`@/*` 代表 `./src/*`）来简化导入。构建过程（tsup）会在编译时自动解析这些别名。
 
 ## 🚀 快速开始
 

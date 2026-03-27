@@ -1,5 +1,5 @@
-import { BaseLLMProvider } from './base.js';
-import type { LLMProviderConfig, LLMRequest, LLMResponse } from '../../types/llm.js';
+import { BaseLLMProvider } from './base';
+import type { LLMProviderConfig, LLMRequest, LLMResponse } from '../../types/llm';
 
 interface OllamaResponse {
   model: string;
@@ -53,7 +53,7 @@ export class OllamaProvider extends BaseLLMProvider {
       throw new Error(`Ollama API error: ${error}`);
     }
 
-    const data: OllamaResponse = await response.json();
+    const data = await response.json() as OllamaResponse;
 
     return {
       content: data.message.content,

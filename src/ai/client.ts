@@ -1,15 +1,15 @@
 import type Graph from 'graphology';
-import type { ComponentNode } from '../types/component.js';
-import type { BlastRadiusMetrics, AIInsights } from '../types/graph.js';
-import type { LLMConfig } from '../types/config.js';
-import { BaseLLMProvider } from './providers/base.js';
-import { OpenAIProvider } from './providers/openai.js';
-import { ClaudeProvider } from './providers/claude.js';
-import { DeepSeekProvider } from './providers/deepseek.js';
-import { GeminiProvider } from './providers/gemini.js';
-import { OllamaProvider } from './providers/ollama.js';
-import { generateAnalysisPrompt, parseAnalysisResponse } from './prompts.js';
-import { getCachedResult, setCachedResult } from '../utils/cache.js';
+import type { ComponentNode } from '../types/component';
+import type { BlastRadiusMetrics, AIInsights } from '../types/graph';
+import type { LLMConfig } from '../types/config';
+import { BaseLLMProvider } from './providers/base';
+import { OpenAIProvider } from './providers/openai';
+import { ClaudeProvider } from './providers/claude';
+import { DeepSeekProvider } from './providers/deepseek';
+import { GeminiProvider } from './providers/gemini';
+import { OllamaProvider } from './providers/ollama';
+import { generateAnalysisPrompt, parseAnalysisResponse } from './prompts';
+import { getCachedResult, setCachedResult } from '../utils/cache';
 import crypto from 'crypto';
 
 export async function analyzeWithLLM(
@@ -81,7 +81,7 @@ function createProvider(config: LLMConfig): BaseLLMProvider {
   return new ProviderClass({
     provider: config.provider,
     apiKey: config.apiKey,
-    baseUrl: config.baseUrl,
+    baseUrl: config.baseUrl || undefined,
     model: config.model,
   });
 }

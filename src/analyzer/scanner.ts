@@ -1,6 +1,6 @@
 import glob from 'fast-glob';
 import path from 'path';
-import type { ScanConfig } from '../types/config.js';
+import type { ScanConfig } from '../types/config';
 
 export interface ScannedFile {
   path: string;

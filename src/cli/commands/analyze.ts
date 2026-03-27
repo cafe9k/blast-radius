@@ -1,13 +1,13 @@
 import chalk from 'chalk';
 import ora from 'ora';
 import type { Command } from 'commander';
-import { scanFiles } from '../analyzer/scanner.js';
-import { parseReactComponents } from '../analyzer/parser/react.js';
-import { buildDependencyGraph } from '../analyzer/graph-builder.js';
-import { calculateBlastRadius } from '../metrics/blast-radius.js';
-import { generateReport } from '../output/report-generator.js';
-import { loadConfig } from '../utils/config-loader.js';
-import { initCache, getCacheStats } from '../utils/cache.js';
+import { scanFiles } from '@/analyzer/scanner';
+import { parseReactComponents } from '@/analyzer/parser/react';
+import { buildDependencyGraph } from '@/analyzer/graph-builder';
+import { calculateBlastRadius } from '@/metrics/blast-radius';
+import { generateReport } from '@/output/report-generator';
+import { loadConfig } from '@/utils/config-loader';
+import { initCache, getCacheStats } from '@/utils/cache';
 import open from 'open';
 import path from 'path';
 import fs from 'fs-extra';
@@ -74,7 +74,7 @@ export async function analyzeCommand(
     if (options.llm && config.llm.apiKey) {
       const llmSpinner = ora('Analyzing with LLM...').start();
       try {
-        const { analyzeWithLLM } = await import('../ai/client.js');
+        const { analyzeWithLLM } = await import('../ai/client');
         aiInsights = await analyzeWithLLM(graph, components, metrics, config.llm);
         llmSpinner.succeed('LLM analysis completed');
       } catch (error) {

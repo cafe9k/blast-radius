@@ -180,6 +180,8 @@ sequenceDiagram
 
 ## 📦 Installation
 
+### From npm (Recommended)
+
 ```bash
 # Install globally
 npm install -g blast-radius
@@ -187,6 +189,37 @@ npm install -g blast-radius
 # Or use with npx
 npx blast-radius analyze
 ```
+
+### Local Development Testing
+
+If you want to test the tool locally before publishing:
+
+```bash
+# Clone the repository
+git clone https://github.com/qing/blast-radius.git
+cd blast-radius
+
+# Install dependencies
+pnpm install
+
+# Build the project
+pnpm build
+
+# Option 1: Use npm link (recommended)
+npm link
+blast-radius analyze  # Now available globally
+
+# Option 2: Run directly
+node dist/index.js analyze
+
+# Option 3: Install locally to global
+npm install -g .
+
+# Unlink when done
+npm unlink -g blast-radius
+```
+
+**Note:** This project uses TypeScript path aliases (`@/*` for `./src/*`) for cleaner imports. The build process (tsup) automatically resolves these aliases during compilation.
 
 ## 🚀 Quick Start
 

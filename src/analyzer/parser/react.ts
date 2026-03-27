@@ -1,10 +1,11 @@
 import * as parser from '@babel/parser';
-import traverse from '@babel/traverse';
+import traverseDefault from '@babel/traverse';
+const traverse = (traverseDefault as any).default || traverseDefault;
 import fs from 'fs-extra';
 import path from 'path';
-import type { ScannedFile } from '../scanner.js';
-import type { ComponentNode, ImportStatement } from '../../types/component.js';
-import { resolveModulePath } from '../resolver.js';
+import type { ScannedFile } from '../scanner';
+import type { ComponentNode, ImportStatement } from '../../types/component';
+import { resolveModulePath } from '../resolver';
 
 export async function parseReactComponents(
   files: ScannedFile[],

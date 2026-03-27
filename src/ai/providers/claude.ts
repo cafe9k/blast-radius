@@ -1,5 +1,5 @@
-import { BaseLLMProvider } from './base.js';
-import type { LLMProviderConfig, LLMRequest, LLMResponse } from '../../types/llm.js';
+import { BaseLLMProvider } from './base';
+import type { LLMProviderConfig, LLMRequest, LLMResponse } from '../../types/llm';
 
 interface ClaudeResponse {
   content: Array<{
@@ -52,7 +52,7 @@ export class ClaudeProvider extends BaseLLMProvider {
       throw new Error(`Claude API error: ${error}`);
     }
 
-    const data: ClaudeResponse = await response.json();
+    const data = await response.json() as ClaudeResponse;
 
     return {
       content: data.content[0].text,

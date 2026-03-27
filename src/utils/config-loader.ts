@@ -1,6 +1,6 @@
 import fs from 'fs-extra';
 import path from 'path';
-import type { BlastRadiusConfig } from '../types/config.js';
+import type { BlastRadiusConfig } from '../types/config';
 
 const DEFAULT_CONFIG: BlastRadiusConfig = {
   scan: {

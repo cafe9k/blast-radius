@@ -1,6 +1,6 @@
-import type { ScanConfig } from '../types/config.js';
-import type { ScannedFile } from './scanner.js';
-import type { ComponentNode } from '../types/component.js';
+import type { ScanConfig } from '../types/config';
+import type { ScannedFile } from './scanner';
+import type { ComponentNode } from '../types/component';
 import Graph from 'graphology';
 
 export interface DependencyNode {

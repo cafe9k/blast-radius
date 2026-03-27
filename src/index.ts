@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import { program } from 'commander';
-import { analyzeCommand } from './cli/commands/analyze.js';
-import { configCommand } from './cli/commands/config.js';
+import { analyzeCommand } from './cli/commands/analyze';
+import { configCommand } from './cli/commands/config';
 import chalk from 'chalk';
 
 const VERSION = '1.0.0';

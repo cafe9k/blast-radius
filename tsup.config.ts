@@ -7,23 +7,17 @@ export default defineConfig({
   splitting: false,
   sourcemap: true,
   clean: true,
-  banner: {
-    js: '#!/usr/bin/env node',
-  },
-  external: [
-    '@babel/parser',
-    '@babel/traverse',
-    'chalk',
-    'commander',
-    'enhanced-resolve',
-    'fast-glob',
-    'fs-extra',
-    'graphology',
-    'graphology-layout',
-    'graphology-layout-force',
-    'ora',
-    'open',
-  ],
+  // Source file already has shebang, no need to add banner
+  external: [],
   treeshake: true,
   minify: false,
+  platform: 'node',
+  target: 'node18',
+  outExtension() {
+    return {
+      js: '.js',
+    };
+  },
+  // Enable tsconfig paths resolution
+  tsconfig: './tsconfig.json',
 });

@@ -1,6 +1,6 @@
 import type Graph from 'graphology';
-import type { ComponentNode } from '../types/component.js';
-import type { BlastRadiusMetrics } from '../types/graph.js';
+import type { ComponentNode } from '../types/component';
+import type { BlastRadiusMetrics } from '../types/graph';
 
 export function generateAnalysisPrompt(
   graph: Graph,

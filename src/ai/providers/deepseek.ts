@@ -1,5 +1,5 @@
-import { BaseLLMProvider } from './base.js';
-import type { LLMProviderConfig, LLMRequest, LLMResponse } from '../../types/llm.js';
+import { BaseLLMProvider } from './base';
+import type { LLMProviderConfig, LLMRequest, LLMResponse } from '../../types/llm';
 
 interface DeepSeekMessage {
   role: 'system' | 'user' | 'assistant';
@@ -63,7 +63,7 @@ export class DeepSeekProvider extends BaseLLMProvider {
       throw new Error(`DeepSeek API error: ${error}`);
     }
 
-    const data: DeepSeekResponse = await response.json();
+    const data = await response.json() as DeepSeekResponse;
 
     return {
       content: data.choices[0].message.content,

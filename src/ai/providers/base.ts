@@ -1,4 +1,4 @@
-import type { LLMProviderConfig, LLMRequest, LLMResponse } from '../../types/llm.js';
+import type { LLMProviderConfig, LLMRequest, LLMResponse } from '../../types/llm';
 
 export abstract class BaseLLMProvider {
   protected config: LLMProviderConfig;

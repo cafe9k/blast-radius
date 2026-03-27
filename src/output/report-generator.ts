@@ -1,6 +1,6 @@
 import fs from 'fs-extra';
 import path from 'path';
-import type { AnalysisResult } from '../types/graph.js';
+import type { AnalysisResult } from '../types/graph';
 
 interface ReportOptions {
   format: ('html' | 'json')[];
@@ -36,7 +36,6 @@ function serializeResult(result: AnalysisResult): any {
     project: result.project,
     components: result.components,
     metrics: Array.from(result.metrics.entries()).map(([key, value]) => ({
-      componentId: key,
       ...value,
     })),
     aiInsights: result.aiInsights,

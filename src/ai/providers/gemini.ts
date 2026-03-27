@@ -1,5 +1,5 @@
-import { BaseLLMProvider } from './base.js';
-import type { LLMProviderConfig, LLMRequest, LLMResponse } from '../../types/llm.js';
+import { BaseLLMProvider } from './base';
+import type { LLMProviderConfig, LLMRequest, LLMResponse } from '../../types/llm';
 
 interface GeminiResponse {
   candidates: Array<{
@@ -56,7 +56,7 @@ export class GeminiProvider extends BaseLLMProvider {
       throw new Error(`Gemini API error: ${error}`);
     }
 
-    const data: GeminiResponse = await response.json();
+    const data = await response.json() as GeminiResponse;
 
     return {
       content: data.candidates[0].content.parts[0].text,
