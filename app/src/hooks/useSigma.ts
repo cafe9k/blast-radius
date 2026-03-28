@@ -8,6 +8,12 @@ export function useSigma(
   onNodeClick?: (nodeId: string) => void
 ) {
   const rendererRef = useRef<Sigma | null>(null);
+  const onNodeClickRef = useRef(onNodeClick);
+
+  // Keep ref updated
+  useEffect(() => {
+    onNodeClickRef.current = onNodeClick;
+  }, [onNodeClick]);
 
   useEffect(() => {
     if (!graph || !containerRef.current) return;
@@ -27,17 +33,15 @@ export function useSigma(
       defaultEdgeColor: 'rgba(0, 217, 255, 0.3)',
       edgeLabelFont: 'JetBrains Mono',
       renderEdgeLabels: false,
-      hideEdgesOnMove: true,
+      hideEdgesOnMove: false,
       minCameraRatio: 0.1,
       maxCameraRatio: 10,
     });
 
     // Handle node click
-    if (onNodeClick) {
-      renderer.on('clickNode', ({ node }) => {
-        onNodeClick(node);
-      });
-    }
+    renderer.on('clickNode', ({ node }) => {
+      onNodeClickRef.current?.(node);
+    });
 
     rendererRef.current = renderer;
 
@@ -45,7 +49,7 @@ export function useSigma(
       renderer.kill();
       rendererRef.current = null;
     };
-  }, [graph, containerRef, onNodeClick]);
+  }, [graph, containerRef]); // Remove onNodeClick from dependencies
 
   return rendererRef;
 }
