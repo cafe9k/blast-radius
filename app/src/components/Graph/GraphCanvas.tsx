@@ -1,4 +1,4 @@
-import { useRef, useEffect, useState, useCallback } from 'react';
+import { useRef, useEffect, useState } from 'react';
 import type { AnalysisData, ColorMode } from '../../types';
 import { useGraph, LayoutType } from '../../hooks/useGraph';
 import { useSigma } from '../../hooks/useSigma';
@@ -37,29 +37,10 @@ export default function GraphCanvas({
   const containerRef = useRef<HTMLDivElement>(null);
   const [layoutType, setLayoutType] = useState<LayoutType>('force');
   const [isFullscreen, setIsFullscreen] = useState(false);
-  const [error, setError] = useState<string | null>(null);
   
   const graph = useGraph(data, searchQuery, riskFilter, colorMode, layoutType);
   
-  // Handle component selection with error handling
-  const handleComponentSelect = useCallback((id: string | null) => {
-    try {
-      if (id && graph && !graph.hasNode(id)) {
-        setError('Node not found or has been filtered');
-        setTimeout(() => setError(null), 2000);
-        return;
-      }
-      
-      onComponentSelect(id);
-      setError(null);
-    } catch (err) {
-      setError('Failed to select component');
-      console.error('Component selection error:', err);
-      setTimeout(() => setError(null), 2000);
-    }
-  }, [graph, onComponentSelect]);
-  
-  const { highlightNode, zoomControls, isProcessing } = useSigma(graph, containerRef, handleComponentSelect);
+  const { highlightNode, zoomControls } = useSigma(graph, containerRef, onComponentSelect);
 
   // Highlight selected node's dependency chain
   useEffect(() => {
@@ -95,27 +76,6 @@ export default function GraphCanvas({
   return (
     <div className="w-full h-full relative">
       <div ref={containerRef} className="w-full h-full" />
-      
-      {/* Processing Indicator */}
-      {isProcessing && (
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-30 pointer-events-none">
-          <div className="glass rounded-full px-4 py-2 border border-primary-cyan/50 bg-primary-cyan/10">
-            <div className="flex items-center gap-2">
-              <div className="w-3 h-3 border-2 border-primary-cyan border-t-transparent rounded-full animate-spin" />
-              <span className="text-xs text-primary-cyan">Processing...</span>
-            </div>
-          </div>
-        </div>
-      )}
-      
-      {/* Error Message */}
-      {error && (
-        <div className="absolute top-20 left-1/2 -translate-x-1/2 z-20 animate-fade-in">
-          <div className="glass rounded-lg px-4 py-2 border border-risk-critical/50 bg-risk-critical/10">
-            <p className="text-sm text-risk-critical">{error}</p>
-          </div>
-        </div>
-      )}
       
       {/* ========== LEFT SIDE: Controls ========== */}
       

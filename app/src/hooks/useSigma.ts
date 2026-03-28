@@ -1,4 +1,4 @@
-import { useEffect, useRef, useCallback, useState } from 'react';
+import { useEffect, useRef, useCallback } from 'react';
 import Sigma from 'sigma';
 import type Graph from 'graphology';
 import type { CameraState } from 'sigma/types';
@@ -20,9 +20,6 @@ export function useSigma(
   const initialCameraStateRef = useRef<CameraState | null>(null);
   const lastHighlightedNodeRef = useRef<string | null>(null);
   const highlightRAFRef = useRef<number>();
-
-  // Processing state for visual feedback
-  const [isProcessing, setIsProcessing] = useState(false);
 
   // Keep ref updated
   useEffect(() => {
@@ -224,18 +221,14 @@ export function useSigma(
 
     // Handle node click - directly highlight for immediate feedback
     renderer.on('clickNode', ({ node }) => {
-      setIsProcessing(true);
       highlightNode(node); // Direct highlight for instant feedback
       onNodeClickRef.current?.(node); // Then notify parent
-      setTimeout(() => setIsProcessing(false), 100);
     });
 
     // Handle stage click (deselect)
     renderer.on('clickStage', () => {
-      setIsProcessing(true);
       highlightNode(null);
       onNodeClickRef.current?.(null);
-      setTimeout(() => setIsProcessing(false), 100);
     });
 
     // Handle node hover for better UX
@@ -259,5 +252,5 @@ export function useSigma(
     };
   }, [graph, containerRef, highlightNode]);
 
-  return { rendererRef, highlightNode, zoomControls, isProcessing };
+  return { rendererRef, highlightNode, zoomControls };
 }
