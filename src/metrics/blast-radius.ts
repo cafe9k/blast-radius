@@ -8,117 +8,33 @@ export async function calculateBlastRadius(
 ): Promise<Map<string, BlastRadiusMetrics>> {
   const metrics = new Map<string, BlastRadiusMetrics>();
   
+  // Create a map for quick component lookup
+  const componentMap = new Map<string, ComponentNode>();
+  for (const component of components) {
+    componentMap.set(component.id, component);
+  }
+  
   for (const node of graph.nodes()) {
-    const inDegree = graph.inDegree(node);
-    const outDegree = graph.outDegree(node);
-    
-    // Calculate depth (BFS to find maximum downstream level)
-    const depth = calculateDownstreamDepth(graph, node);
-    
-    // Calculate breadth (total affected files)
-    const breadth = calculateAffectedBreadth(graph, node);
-    
-    // Calculate risk score
-    const riskScore = calculateRiskScore(inDegree, outDegree, depth, breadth);
+    const component = componentMap.get(node);
+    const lineCount = component?.lineCount || 0;
+    const riskScore = lineCount;
+    const level = getRiskLevel(lineCount);
     
     metrics.set(node, {
       componentId: node,
-      fanIn: inDegree,
-      fanOut: outDegree,
-      depth,
-      breadth,
+      lineCount,
       riskScore,
-      level: getRiskLevel(riskScore),
+      level,
     });
   }
   
   return metrics;
 }
 
-function calculateDownstreamDepth(graph: Graph, startNode: string): number {
-  const visited = new Set<string>();
-  const queue: { node: string; level: number }[] = [{ node: startNode, level: 0 }];
-  let maxDepth = 0;
-  
-  while (queue.length > 0) {
-    const { node, level } = queue.shift()!;
-    
-    if (visited.has(node)) {
-      continue;
-    }
-    
-    visited.add(node);
-    
-    // Follow outgoing edges (dependencies)
-    graph.forEachOutNeighbor(node, (neighbor) => {
-      if (!visited.has(neighbor)) {
-        queue.push({ node: neighbor, level: level + 1 });
-        maxDepth = Math.max(maxDepth, level + 1);
-      }
-    });
-  }
-  
-  return maxDepth;
-}
-
-function calculateAffectedBreadth(graph: Graph, startNode: string): number {
-  const visited = new Set<string>();
-  const queue: string[] = [startNode];
-  
-  while (queue.length > 0) {
-    const node = queue.shift()!;
-    
-    if (visited.has(node)) {
-      continue;
-    }
-    
-    visited.add(node);
-    
-    // Follow incoming edges (dependents - files that depend on this)
-    graph.forEachInNeighbor(node, (neighbor) => {
-      if (!visited.has(neighbor)) {
-        queue.push(neighbor);
-      }
-    });
-  }
-  
-  // Exclude the starting node itself
-  return Math.max(0, visited.size - 1);
-}
-
-function calculateRiskScore(
-  fanIn: number,
-  fanOut: number,
-  depth: number,
-  breadth: number
-): number {
-  // Weighted scoring algorithm
-  // High fan-in = many dependents = high risk
-  // High fan-out = many dependencies = moderate risk
-  // High depth = deep dependency chain = moderate risk
-  // High breadth = wide impact = high risk
-  
-  const weights = {
-    fanIn: 10,      // Most important - impact on other components
-    breadth: 8,     // High importance - total affected files
-    fanOut: 5,      // Moderate - dependency complexity
-    depth: 3,       // Lower - depth matters but less than breadth
-  };
-  
-  const score = 
-    fanIn * weights.fanIn +
-    breadth * weights.breadth +
-    fanOut * weights.fanOut +
-    depth * weights.depth;
-  
-  // Normalize to 0-100
-  return Math.min(100, Math.round(score / 2));
-}
-
-function getRiskLevel(score: number): 'low' | 'medium' | 'high' | 'critical' {
-  if (score >= 80) return 'critical';
-  if (score >= 60) return 'high';
-  if (score >= 40) return 'medium';
+function getRiskLevel(lineCount: number): 'low' | 'medium' | 'high' | 'critical' {
+  if (lineCount >= 500) return 'critical';
+  if (lineCount >= 300) return 'high';
+  if (lineCount >= 100) return 'medium';
   return 'low';
 }
 

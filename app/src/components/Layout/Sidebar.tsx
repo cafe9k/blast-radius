@@ -29,6 +29,8 @@ export default function Sidebar({
     .slice(0, 10);
   
   const totalDependencies = data.components.reduce((sum, c) => sum + c.dependencies.length, 0);
+  const totalLines = data.components.reduce((sum, c) => sum + (c.lineCount || 0), 0);
+  const avgLines = data.components.length > 0 ? Math.round(totalLines / data.components.length) : 0;
   
   return (
     <aside className="w-72 glass border-r border-white/10 flex flex-col overflow-hidden">
@@ -43,8 +45,13 @@ export default function Sidebar({
           </div>
           
           <div className="bg-background-dark/50 rounded-lg p-3 border border-white/5">
-            <div className="text-2xl font-bold text-primary-purple">{totalDependencies}</div>
-            <div className="text-xs text-text-tertiary mt-1">Total Dependencies</div>
+            <div className="text-2xl font-bold text-primary-purple">{totalLines.toLocaleString()}</div>
+            <div className="text-xs text-text-tertiary mt-1">Total Lines</div>
+          </div>
+          
+          <div className="bg-background-dark/50 rounded-lg p-3 border border-white/5">
+            <div className="text-2xl font-bold text-primary-purple">{avgLines}</div>
+            <div className="text-xs text-text-tertiary mt-1">Avg Lines/Component</div>
           </div>
         </div>
       </div>

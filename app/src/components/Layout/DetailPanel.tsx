@@ -52,27 +52,27 @@ export default function DetailPanel({ data, selectedComponent, onClose }: Detail
           <div className="text-xs text-text-tertiary mb-3">Metrics</div>
           <div className="grid grid-cols-2 gap-3">
             <div className="bg-background-dark/50 rounded-lg p-3 border border-white/10">
-              <div className="text-xl font-bold text-primary-cyan">{metrics.fanIn}</div>
-              <div className="text-xs text-text-tertiary mt-1">Fan-In</div>
+              <div className="text-xl font-bold text-primary-cyan">{component.lineCount || 0}</div>
+              <div className="text-xs text-text-tertiary mt-1">Lines of Code</div>
             </div>
             <div className="bg-background-dark/50 rounded-lg p-3 border border-white/10">
-              <div className="text-xl font-bold text-primary-purple">{metrics.fanOut}</div>
-              <div className="text-xs text-text-tertiary mt-1">Fan-Out</div>
+              <div className="text-xl font-bold text-primary-purple">{component.dependencies.length}</div>
+              <div className="text-xs text-text-tertiary mt-1">Dependencies</div>
             </div>
             <div className="bg-background-dark/50 rounded-lg p-3 border border-white/10">
-              <div className="text-xl font-bold text-primary-green">{metrics.depth}</div>
-              <div className="text-xs text-text-tertiary mt-1">Depth</div>
+              <div className="text-xl font-bold text-primary-green">{component.dependents.length}</div>
+              <div className="text-xs text-text-tertiary mt-1">Dependents</div>
             </div>
             <div className="bg-background-dark/50 rounded-lg p-3 border border-white/10">
-              <div className="text-xl font-bold text-risk-high">{metrics.breadth}</div>
-              <div className="text-xs text-text-tertiary mt-1">Breadth</div>
+              <div className="text-xl font-bold text-risk-high">{(component.exports || []).length}</div>
+              <div className="text-xs text-text-tertiary mt-1">Exports</div>
             </div>
           </div>
         </div>
         
         {/* Risk Score */}
         <div>
-          <div className="text-xs text-text-tertiary mb-2">Risk Score</div>
+          <div className="text-xs text-text-tertiary mb-2">Lines of Code (Risk Score)</div>
           <div className="flex items-center gap-3">
             <div className="flex-1 h-3 bg-background-dark rounded-full overflow-hidden">
               <div
@@ -83,7 +83,7 @@ export default function DetailPanel({ data, selectedComponent, onClose }: Detail
                   metrics.level === 'medium' && 'bg-risk-medium',
                   metrics.level === 'low' && 'bg-risk-low',
                 )}
-                style={{ width: `${metrics.riskScore}%` }}
+                style={{ width: `${Math.min(100, (metrics.riskScore / 500) * 100)}%` }}
               />
             </div>
             <span className={cn(
@@ -93,7 +93,7 @@ export default function DetailPanel({ data, selectedComponent, onClose }: Detail
               metrics.level === 'medium' && 'text-risk-medium',
               metrics.level === 'low' && 'text-risk-low',
             )}>
-              {metrics.riskScore}
+              {metrics.lineCount}
             </span>
           </div>
         </div>

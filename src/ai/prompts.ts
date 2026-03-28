@@ -10,8 +10,8 @@ export function generateAnalysisPrompt(
   // Get graph statistics
   const nodeCount = graph.order;
   const edgeCount = graph.size;
-  const avgFanIn = Array.from(metrics.values()).reduce((sum, m) => sum + m.fanIn, 0) / metrics.size;
-  const avgFanOut = Array.from(metrics.values()).reduce((sum, m) => sum + m.fanOut, 0) / metrics.size;
+  const totalLines = Array.from(metrics.values()).reduce((sum, m) => sum + m.lineCount, 0);
+  const avgLines = totalLines / metrics.size;
   
   // Get risk distribution
   const riskDist = {
@@ -27,7 +27,7 @@ export function generateAnalysisPrompt(
     .slice(0, 10)
     .map(m => {
       const comp = components.find(c => c.id === m.componentId);
-      return `- ${comp?.name || m.componentId} (Score: ${m.riskScore}, Level: ${m.level}, Fan-In: ${m.fanIn}, Breadth: ${m.breadth})`;
+      return `- ${comp?.name || m.componentId} (${m.lineCount} lines, Level: ${m.level})`;
     })
     .join('\n');
   
@@ -37,21 +37,21 @@ Analyze the following React component dependency graph and provide insights on a
 **Project Statistics:**
 - Total Components: ${nodeCount}
 - Total Dependencies: ${edgeCount}
-- Average Fan-In: ${avgFanIn.toFixed(2)}
-- Average Fan-Out: ${avgFanOut.toFixed(2)}
+- Total Lines of Code: ${totalLines}
+- Average Lines per Component: ${avgLines.toFixed(0)}
 
-**Risk Distribution:**
-- Critical: ${riskDist.critical} components
-- High: ${riskDist.high} components
-- Medium: ${riskDist.medium} components
-- Low: ${riskDist.low} components
+**Risk Distribution (based on lines of code):**
+- Critical (500+ lines): ${riskDist.critical} components
+- High (300-500 lines): ${riskDist.high} components
+- Medium (100-300 lines): ${riskDist.medium} components
+- Low (<100 lines): ${riskDist.low} components
 
-**Top 10 High-Risk Components:**
+**Top 10 Largest Components:**
 ${topRisk}
 
 **Analysis Tasks:**
 1. Identify architectural risks and anti-patterns
-2. Highlight components that are critical to system stability
+2. Highlight components that are too large and should be refactored
 3. Suggest refactoring opportunities to reduce coupling
 4. Recommend best practices for improving maintainability
 

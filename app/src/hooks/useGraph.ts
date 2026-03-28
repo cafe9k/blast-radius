@@ -110,6 +110,10 @@ export function useGraph(
       data.metrics.map(m => [m.componentId, m])
     );
     
+    // Calculate max lineCount for node size normalization
+    const lineCounts = data.components.map(c => c.lineCount || 0);
+    const maxLineCount = Math.max(...lineCounts, 1);
+    
     // Add nodes
     data.components.forEach(component => {
       const metrics = metricsMap.get(component.id);
@@ -123,17 +127,20 @@ export function useGraph(
         return;
       }
       
+      // Node size based on lineCount relative value (5-30)
+      const lineCount = component.lineCount || 0;
+      const nodeSize = 5 + (lineCount / maxLineCount) * 25;
+      
       graph.addNode(component.id, {
         label: component.name,
         componentType: component.type,
         path: component.path,
-        size: Math.max(5, (metrics?.fanIn || 0) * 2 + 5),
+        size: nodeSize,
         color: getRiskColor(metrics?.level || 'low'),
         originalColor: getRiskColor(metrics?.level || 'low'),
         riskLevel: metrics?.level || 'low',
         riskScore: metrics?.riskScore || 0,
-        fanIn: metrics?.fanIn || 0,
-        fanOut: metrics?.fanOut || 0,
+        lineCount: lineCount,
         // Initial random positions for force layout
         x: Math.random() * 100,
         y: Math.random() * 100,

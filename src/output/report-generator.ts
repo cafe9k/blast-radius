@@ -246,12 +246,17 @@ async function generateStandaloneHTML(result: AnalysisResult): Promise<string> {
         <div class="stat-label">React Components</div>
       </div>
       <div class="stat-card">
-        <div class="stat-value">${(Array.from(result.metrics.values()).reduce((sum, m) => sum + m.riskScore, 0) / result.metrics.size).toFixed(1)}</div>
-        <div class="stat-label">Avg Risk Score</div>
+        <div class="stat-value">${result.components.reduce((sum, c) => sum + (c.lineCount || 0), 0).toLocaleString()}</div>
+        <div class="stat-label">Total Lines</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">${result.components.length > 0 ? Math.round(result.components.reduce((sum, c) => sum + (c.lineCount || 0), 0) / result.components.length) : 0}</div>
+        <div class="stat-label">Avg Lines/Component</div>
       </div>
     </div>
     
     <h2 class="section-title">Risk Distribution</h2>
+    <p style="color: #94A3B8; margin-bottom: 1rem; font-size: 0.875rem;">Risk based on lines of code: Low (&lt;100), Medium (100-300), High (300-500), Critical (500+)</p>
     <div class="risk-distribution">
       <div class="risk-card critical">
         <div class="risk-count">${riskDistribution.critical}</div>

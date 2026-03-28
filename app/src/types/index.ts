@@ -24,10 +24,7 @@ export interface ComponentNode {
 
 export interface BlastRadiusMetrics {
   componentId: string;
-  fanIn: number;
-  fanOut: number;
-  depth: number;
-  breadth: number;
+  lineCount: number;
   riskScore: number;
   level: 'low' | 'medium' | 'high' | 'critical';
 }

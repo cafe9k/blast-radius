@@ -19,10 +19,7 @@ export interface ComponentMetric {
   componentId: string;
   componentName: string;
   path: string;
-  fanIn: number;
-  fanOut: number;
-  depth: number;
-  breadth: number;
+  lineCount: number;
   riskScore: number;
   riskLevel: 'low' | 'medium' | 'high' | 'critical';
 }

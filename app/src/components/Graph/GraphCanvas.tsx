@@ -210,19 +210,19 @@ export default function GraphCanvas({
           <div className="flex flex-wrap gap-x-3 gap-y-1">
             {colorMode === 'risk' ? (
               <>
-                <div className="flex items-center gap-1" title="Low Risk (0-39)">
+                <div className="flex items-center gap-1" title="Low Risk (<100 lines)">
                   <div className="w-2.5 h-2.5 rounded-full bg-risk-low" />
                   <span className="text-[10px] text-text-secondary">Low</span>
                 </div>
-                <div className="flex items-center gap-1" title="Medium Risk (40-59)">
+                <div className="flex items-center gap-1" title="Medium Risk (100-300 lines)">
                   <div className="w-2.5 h-2.5 rounded-full bg-risk-medium" />
                   <span className="text-[10px] text-text-secondary">Med</span>
                 </div>
-                <div className="flex items-center gap-1" title="High Risk (60-79)">
+                <div className="flex items-center gap-1" title="High Risk (300-500 lines)">
                   <div className="w-2.5 h-2.5 rounded-full bg-risk-high" />
                   <span className="text-[10px] text-text-secondary">High</span>
                 </div>
-                <div className="flex items-center gap-1" title="Critical Risk (80-100)">
+                <div className="flex items-center gap-1" title="Critical Risk (500+ lines)">
                   <div className="w-2.5 h-2.5 rounded-full bg-risk-critical" />
                   <span className="text-[10px] text-text-secondary">Crit</span>
                 </div>
@@ -232,6 +232,14 @@ export default function GraphCanvas({
                 Colors = functional groupings
               </span>
             )}
+          </div>
+          
+          {/* Size Legend */}
+          <div className="mt-1.5 pt-1.5 border-t border-white/5 flex items-center gap-2">
+            <div className="w-2 h-2 rounded-full bg-text-tertiary" />
+            <div className="w-3 h-3 rounded-full bg-text-tertiary" />
+            <div className="w-4 h-4 rounded-full bg-text-tertiary" />
+            <span className="text-[10px] text-text-tertiary ml-1">Size = Lines of code</span>
           </div>
           
           {/* Cycle indicator */}
