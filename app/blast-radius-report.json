@@ -1,0 +1,327 @@
+{
+  "project": {
+    "name": "app",
+    "path": "/Users/qing/Code/blast-radius/app",
+    "componentCount": 11,
+    "analyzedAt": "2026-03-28T13:52:16.376Z"
+  },
+  "components": [
+    {
+      "id": "src/App.tsx",
+      "name": "App",
+      "path": "src/App.tsx",
+      "type": "react",
+      "dependencies": [
+        "src/types/index.ts",
+        "src/hooks/useData.ts",
+        "src/components/Layout/Header.tsx",
+        "src/components/Layout/Sidebar.tsx",
+        "src/components/Graph/GraphCanvas.tsx",
+        "src/components/Layout/DetailPanel.tsx"
+      ],
+      "dependents": [
+        "src/main.tsx",
+        "src/components/Graph/GraphCanvas.tsx",
+        "src/components/Layout/DetailPanel.tsx",
+        "src/components/Layout/Header.tsx",
+        "src/components/Layout/Sidebar.tsx"
+      ],
+      "lineCount": 90,
+      "exports": [
+        "cn",
+        "default"
+      ],
+      "imports": [
+        "react",
+        "./types",
+        "./hooks/useData",
+        "./components/Layout/Header",
+        "./components/Layout/Sidebar",
+        "./components/Graph/GraphCanvas",
+        "./components/Layout/DetailPanel",
+        "clsx",
+        "tailwind-merge"
+      ]
+    },
+    {
+      "id": "src/main.tsx",
+      "name": "Main",
+      "path": "src/main.tsx",
+      "type": "react",
+      "dependencies": [
+        "src/App.tsx",
+        "src/styles/index.css"
+      ],
+      "dependents": [],
+      "lineCount": 11,
+      "exports": [],
+      "imports": [
+        "react",
+        "react-dom/client",
+        "./App",
+        "./styles/index.css"
+      ]
+    },
+    {
+      "id": "src/hooks/useData.ts",
+      "name": "UseData",
+      "path": "src/hooks/useData.ts",
+      "type": "react",
+      "dependencies": [
+        "src/types/index.ts"
+      ],
+      "dependents": [
+        "src/App.tsx"
+      ],
+      "lineCount": 41,
+      "exports": [
+        "useData"
+      ],
+      "imports": [
+        "react",
+        "../types"
+      ]
+    },
+    {
+      "id": "src/hooks/useGraph.ts",
+      "name": "UseGraph",
+      "path": "src/hooks/useGraph.ts",
+      "type": "react",
+      "dependencies": [
+        "src/types/index.ts"
+      ],
+      "dependents": [
+        "src/components/Graph/GraphCanvas.tsx"
+      ],
+      "lineCount": 211,
+      "exports": [
+        "useGraph"
+      ],
+      "imports": [
+        "react",
+        "graphology",
+        "graphology-layout-force",
+        "graphology-layout/circular",
+        "graphology-communities-louvain",
+        "../types"
+      ]
+    },
+    {
+      "id": "src/hooks/useSigma.ts",
+      "name": "UseSigma",
+      "path": "src/hooks/useSigma.ts",
+      "type": "react",
+      "dependencies": [],
+      "dependents": [
+        "src/components/Graph/GraphCanvas.tsx",
+        "src/components/Graph/ZoomControls.tsx"
+      ],
+      "lineCount": 274,
+      "exports": [
+        "useSigma"
+      ],
+      "imports": [
+        "react",
+        "sigma",
+        "graphology",
+        "sigma/types"
+      ]
+    },
+    {
+      "id": "src/types/index.ts",
+      "name": "Types",
+      "path": "src/types/index.ts",
+      "type": "react",
+      "dependencies": [],
+      "dependents": [
+        "src/App.tsx",
+        "src/hooks/useData.ts",
+        "src/hooks/useGraph.ts",
+        "src/components/Graph/GraphCanvas.tsx",
+        "src/components/Layout/DetailPanel.tsx",
+        "src/components/Layout/Sidebar.tsx"
+      ],
+      "lineCount": 42,
+      "exports": [],
+      "imports": []
+    },
+    {
+      "id": "src/components/Graph/GraphCanvas.tsx",
+      "name": "GraphCanvas",
+      "path": "src/components/Graph/GraphCanvas.tsx",
+      "type": "react",
+      "dependencies": [
+        "src/types/index.ts",
+        "src/hooks/useGraph.ts",
+        "src/hooks/useSigma.ts",
+        "src/App.tsx"
+      ],
+      "dependents": [
+        "src/App.tsx"
+      ],
+      "lineCount": 320,
+      "exports": [
+        "default"
+      ],
+      "imports": [
+        "react",
+        "../../types",
+        "../../hooks/useGraph",
+        "../../hooks/useSigma",
+        "lucide-react",
+        "../../App"
+      ]
+    },
+    {
+      "id": "src/components/Graph/ZoomControls.tsx",
+      "name": "ZoomControls",
+      "path": "src/components/Graph/ZoomControls.tsx",
+      "type": "react",
+      "dependencies": [
+        "src/hooks/useSigma.ts"
+      ],
+      "dependents": [],
+      "lineCount": 42,
+      "exports": [
+        "default"
+      ],
+      "imports": [
+        "lucide-react",
+        "../../hooks/useSigma"
+      ]
+    },
+    {
+      "id": "src/components/Layout/DetailPanel.tsx",
+      "name": "DetailPanel",
+      "path": "src/components/Layout/DetailPanel.tsx",
+      "type": "react",
+      "dependencies": [
+        "src/types/index.ts",
+        "src/App.tsx"
+      ],
+      "dependents": [
+        "src/App.tsx"
+      ],
+      "lineCount": 160,
+      "exports": [
+        "default"
+      ],
+      "imports": [
+        "lucide-react",
+        "../../types",
+        "../../App"
+      ]
+    },
+    {
+      "id": "src/components/Layout/Header.tsx",
+      "name": "Header",
+      "path": "src/components/Layout/Header.tsx",
+      "type": "react",
+      "dependencies": [
+        "src/App.tsx"
+      ],
+      "dependents": [
+        "src/App.tsx"
+      ],
+      "lineCount": 56,
+      "exports": [
+        "default"
+      ],
+      "imports": [
+        "lucide-react",
+        "../../App"
+      ]
+    },
+    {
+      "id": "src/components/Layout/Sidebar.tsx",
+      "name": "Sidebar",
+      "path": "src/components/Layout/Sidebar.tsx",
+      "type": "react",
+      "dependencies": [
+        "src/types/index.ts",
+        "src/App.tsx"
+      ],
+      "dependents": [
+        "src/App.tsx"
+      ],
+      "lineCount": 147,
+      "exports": [
+        "default"
+      ],
+      "imports": [
+        "react",
+        "../../types",
+        "../../App"
+      ]
+    }
+  ],
+  "metrics": [
+    {
+      "componentId": "src/App.tsx",
+      "lineCount": 90,
+      "riskScore": 90,
+      "level": "low"
+    },
+    {
+      "componentId": "src/main.tsx",
+      "lineCount": 11,
+      "riskScore": 11,
+      "level": "low"
+    },
+    {
+      "componentId": "src/hooks/useData.ts",
+      "lineCount": 41,
+      "riskScore": 41,
+      "level": "low"
+    },
+    {
+      "componentId": "src/hooks/useGraph.ts",
+      "lineCount": 211,
+      "riskScore": 211,
+      "level": "medium"
+    },
+    {
+      "componentId": "src/hooks/useSigma.ts",
+      "lineCount": 274,
+      "riskScore": 274,
+      "level": "medium"
+    },
+    {
+      "componentId": "src/types/index.ts",
+      "lineCount": 42,
+      "riskScore": 42,
+      "level": "low"
+    },
+    {
+      "componentId": "src/components/Graph/GraphCanvas.tsx",
+      "lineCount": 320,
+      "riskScore": 320,
+      "level": "high"
+    },
+    {
+      "componentId": "src/components/Graph/ZoomControls.tsx",
+      "lineCount": 42,
+      "riskScore": 42,
+      "level": "low"
+    },
+    {
+      "componentId": "src/components/Layout/DetailPanel.tsx",
+      "lineCount": 160,
+      "riskScore": 160,
+      "level": "medium"
+    },
+    {
+      "componentId": "src/components/Layout/Header.tsx",
+      "lineCount": 56,
+      "riskScore": 56,
+      "level": "low"
+    },
+    {
+      "componentId": "src/components/Layout/Sidebar.tsx",
+      "lineCount": 147,
+      "riskScore": 147,
+      "level": "medium"
+    }
+  ],
+  "aiInsights": null
+}
