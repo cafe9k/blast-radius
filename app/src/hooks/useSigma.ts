@@ -135,8 +135,8 @@ export function useSigma(
       labelRenderedSizeThreshold: 6,
       labelFont: 'JetBrains Mono',
       labelSize: 12,
-      labelColor: { color: '#E2E8F0' },
-      defaultNodeColor: '#00D9FF',
+      labelColor: { color: '#e6edf3' }, // GitHub fg.default
+      defaultNodeColor: '#58a6ff', // GitHub accent blue
       defaultEdgeColor: 'rgba(148, 163, 184, 0.12)',
       edgeLabelFont: 'JetBrains Mono',
       renderEdgeLabels: false,
@@ -149,7 +149,7 @@ export function useSigma(
           res.label = '';
         }
         if (data.inCycle && !data.hidden) {
-          res.borderColor = '#FF0000';
+          res.borderColor = '#f85149'; // GitHub danger red
           res.borderSize = 2;
         }
         return res;

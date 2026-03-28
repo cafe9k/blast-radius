@@ -3,7 +3,7 @@
     "name": "blast-radius",
     "path": "/Users/qing/Code/blast-radius",
     "componentCount": 29,
-    "analyzedAt": "2026-03-28T11:33:06.469Z"
+    "analyzedAt": "2026-03-28T13:16:08.260Z"
   },
   "components": [
     {
@@ -543,58 +543,6 @@
       ]
     },
     {
-      "id": "src/analyzer/parser/react.ts",
-      "name": "React",
-      "path": "src/analyzer/parser/react.ts",
-      "type": "react",
-      "dependencies": [
-        "src/analyzer/scanner.ts",
-        "src/types/component.ts",
-        "src/analyzer/resolver.ts"
-      ],
-      "dependents": [
-        "src/cli/commands/analyze.ts"
-      ],
-      "lineCount": 272,
-      "exports": [
-        "parseReactComponents"
-      ],
-      "imports": [
-        "@babel/parser",
-        "@babel/traverse",
-        "fs-extra",
-        "path",
-        "url",
-        "worker_threads",
-        "os",
-        "../scanner",
-        "../../types/component",
-        "../resolver"
-      ]
-    },
-    {
-      "id": "src/analyzer/parser/worker.ts",
-      "name": "Worker",
-      "path": "src/analyzer/parser/worker.ts",
-      "type": "react",
-      "dependencies": [
-        "src/types/component.ts",
-        "src/analyzer/resolver.ts"
-      ],
-      "dependents": [],
-      "lineCount": 167,
-      "exports": [],
-      "imports": [
-        "worker_threads",
-        "@babel/parser",
-        "@babel/traverse",
-        "fs-extra",
-        "path",
-        "../../types/component",
-        "../resolver"
-      ]
-    },
-    {
       "id": "src/cli/commands/analyze.ts",
       "name": "Analyze",
       "path": "src/cli/commands/analyze.ts",
@@ -653,6 +601,58 @@
         "fs-extra",
         "path",
         "commander"
+      ]
+    },
+    {
+      "id": "src/analyzer/parser/react.ts",
+      "name": "React",
+      "path": "src/analyzer/parser/react.ts",
+      "type": "react",
+      "dependencies": [
+        "src/analyzer/scanner.ts",
+        "src/types/component.ts",
+        "src/analyzer/resolver.ts"
+      ],
+      "dependents": [
+        "src/cli/commands/analyze.ts"
+      ],
+      "lineCount": 272,
+      "exports": [
+        "parseReactComponents"
+      ],
+      "imports": [
+        "@babel/parser",
+        "@babel/traverse",
+        "fs-extra",
+        "path",
+        "url",
+        "worker_threads",
+        "os",
+        "../scanner",
+        "../../types/component",
+        "../resolver"
+      ]
+    },
+    {
+      "id": "src/analyzer/parser/worker.ts",
+      "name": "Worker",
+      "path": "src/analyzer/parser/worker.ts",
+      "type": "react",
+      "dependencies": [
+        "src/types/component.ts",
+        "src/analyzer/resolver.ts"
+      ],
+      "dependents": [],
+      "lineCount": 167,
+      "exports": [],
+      "imports": [
+        "worker_threads",
+        "@babel/parser",
+        "@babel/traverse",
+        "fs-extra",
+        "path",
+        "../../types/component",
+        "../resolver"
       ]
     }
   ],
@@ -808,18 +808,6 @@
       "level": "low"
     },
     {
-      "componentId": "src/analyzer/parser/react.ts",
-      "lineCount": 272,
-      "riskScore": 272,
-      "level": "medium"
-    },
-    {
-      "componentId": "src/analyzer/parser/worker.ts",
-      "lineCount": 167,
-      "riskScore": 167,
-      "level": "medium"
-    },
-    {
       "componentId": "src/cli/commands/analyze.ts",
       "lineCount": 258,
       "riskScore": 258,
@@ -829,6 +817,18 @@
       "componentId": "src/cli/commands/config.ts",
       "lineCount": 101,
       "riskScore": 101,
+      "level": "medium"
+    },
+    {
+      "componentId": "src/analyzer/parser/react.ts",
+      "lineCount": 272,
+      "riskScore": 272,
+      "level": "medium"
+    },
+    {
+      "componentId": "src/analyzer/parser/worker.ts",
+      "lineCount": 167,
+      "riskScore": 167,
       "level": "medium"
     }
   ],

@@ -10,16 +10,16 @@
 
 body {
   font-family: 'JetBrains Mono', monospace;
-  background-color: #0F0F23;
-  color: #E2E8F0;
+  background-color: #0d1117;
+  color: #e6edf3;
   overflow: hidden;
 }
 
-/* Glassmorphism effect */
+/* Glassmorphism effect - GitHub Dark style */
 .glass {
-  background: rgba(26, 26, 46, 0.8);
+  background: rgba(22, 27, 34, 0.95);
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid #30363d;
 }
 
 /* Neon glow effects - GitHub style */
@@ -41,23 +41,23 @@ body {
               0 0 20px #3fb950;
 }
 
-/* Scrollbar styling */
+/* Scrollbar styling - GitHub Dark style */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #1A1A2E;
+  background: #0d1117;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #16213E;
+  background: #30363d;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #00D9FF;
+  background: #58a6ff;
 }
 
 /* Custom animations */
