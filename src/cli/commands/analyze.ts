@@ -20,7 +20,6 @@ import open from 'open';
 import path from 'path';
 import fs from 'fs-extra';
 import http from 'http';
-import { fileURLToPath } from 'url';
 import type { ScannedFile } from '@/analyzer/scanner';
 import type { ComponentNode } from '@/types/component';
 
@@ -31,7 +30,6 @@ interface AnalyzeOptions {
   depth: string;
   config?: string;
   open: boolean;
-  serve: boolean;
 }
 
 const MIME_TYPES: Record<string, string> = {
@@ -243,13 +241,11 @@ export async function analyzeCommand(
     // Close cache
     closeGraphCache();
     
-    // Serve or open in browser
-    if (options.serve && options.output.includes('html')) {
+    // Start local server (default behavior to avoid CORS issues with ES modules)
+    if (options.output.includes('html')) {
       await startServer(outputPath, absolutePath);
       // Keep process alive
       process.stdin.resume();
-    } else if (options.open && options.output.includes('html')) {
-      await open(outputPath);
     }
     
   } catch (error) {

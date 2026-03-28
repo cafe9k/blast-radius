@@ -228,11 +228,8 @@ npm unlink -g blast-radius
 ## 🚀 Quick Start
 
 ```bash
-# Analyze current directory
+# Analyze current directory (starts local server automatically)
 blast-radius analyze
-
-# Analyze with local server (recommended for ES modules)
-blast-radius analyze --serve
 
 # Analyze specific project
 blast-radius analyze /path/to/react/project
@@ -333,7 +330,7 @@ The generated HTML report features:
 - **Interactive Graph**: Zoom, pan, and explore dependencies
 - **Force-Directed Layout**: Automatic node positioning for optimal visualization
 - **Community Detection**: Louvain algorithm identifies functional groupings
-- **Color Modes**: 
+- **Color Modes**:
   - Risk Level: Green (low) → Red (critical)
   - Community: Color-coded by functional grouping
 - **Node Size**: Mapped to blast radius (larger = more impact)
@@ -341,15 +338,7 @@ The generated HTML report features:
 - **Search & Filter**: Find components by name or filter by risk level
 - **Statistics Panel**: Overview of project health metrics
 
-### Using the --serve Option
-
-When working with ES modules, browsers enforce CORS restrictions on `file://` URLs. Use `--serve` to start a local HTTP server:
-
-```bash
-blast-radius analyze --serve
-```
-
-This starts a local server and automatically opens the report in your browser.
+> **Note**: The tool automatically starts a local HTTP server to serve the report, avoiding CORS restrictions with ES modules.
 
 ## 🔧 CLI Commands
 
@@ -364,7 +353,6 @@ Options:
   -d, --depth <level>    Analysis depth (quick, full) [default: full]
   -c, --config <file>    Path to config file
   --open                 Open report in browser after generation [default: true]
-  --serve                Start local HTTP server to serve the report
 
 # Manage configuration
 blast-radius config --init          # Create config file

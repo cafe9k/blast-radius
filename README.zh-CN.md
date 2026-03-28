@@ -228,11 +228,8 @@ npm unlink -g blast-radius
 ## 🚀 快速开始
 
 ```bash
-# 分析当前目录
+# 分析当前目录（自动启动本地服务器）
 blast-radius analyze
-
-# 使用本地服务器分析（推荐，避免 CORS 问题）
-blast-radius analyze --serve
 
 # 分析指定项目
 blast-radius analyze /path/to/react/project
@@ -341,15 +338,7 @@ blast-radius analyze
 - **搜索与过滤**：按名称查找组件或按风险等级过滤
 - **统计面板**：项目健康指标概览
 
-### 使用 --serve 选项
-
-在处理 ES 模块时，浏览器对 `file://` URL 有 CORS 限制。使用 `--serve` 启动本地 HTTP 服务器：
-
-```bash
-blast-radius analyze --serve
-```
-
-这将启动本地服务器并自动在浏览器中打开报告。
+> **注意**：工具会自动启动本地 HTTP 服务器来提供报告，避免 ES 模块的 CORS 限制。
 
 ## 🔧 CLI 命令
 
@@ -364,7 +353,6 @@ blast-radius analyze [path] [options]
   -d, --depth <level>    分析深度 (quick, full) [默认: full]
   -c, --config <file>    配置文件路径
   --open                 分析后自动打开报告 [默认: true]
-  --serve                启动本地 HTTP 服务器提供报告
 
 # 管理配置
 blast-radius config --init          # 创建配置文件
