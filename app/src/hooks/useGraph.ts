@@ -1,8 +1,11 @@
 import { useMemo } from 'react';
 import Graph from 'graphology';
 import forceLayout from 'graphology-layout-force';
+import circular from 'graphology-layout/circular';
 import louvain from 'graphology-communities-louvain';
 import type { AnalysisData, ColorMode } from '../types';
+
+export type LayoutType = 'force' | 'circular' | 'random';
 
 // Predefined community colors (palette for up to 12 communities)
 const COMMUNITY_COLORS = [
@@ -63,7 +66,40 @@ function detectCycles(graph: Graph): Set<string> {
   return nodesInCycles;
 }
 
-export function useGraph(data: AnalysisData | null, searchQuery: string, riskFilter: string, colorMode: ColorMode = 'risk') {
+// Apply different layout algorithms
+function applyLayout(graph: Graph, layoutType: LayoutType) {
+  if (graph.order === 0) return;
+
+  switch (layoutType) {
+    case 'force':
+      // Reset to random positions first
+      graph.forEachNode((node) => {
+        graph.setNodeAttribute(node, 'x', Math.random() * 100);
+        graph.setNodeAttribute(node, 'y', Math.random() * 100);
+      });
+      forceLayout(graph, { maxIterations: 100 });
+      break;
+    
+    case 'circular':
+      circular.assign(graph, { scale: 50 });
+      break;
+    
+    case 'random':
+      graph.forEachNode((node) => {
+        graph.setNodeAttribute(node, 'x', Math.random() * 100);
+        graph.setNodeAttribute(node, 'y', Math.random() * 100);
+      });
+      break;
+  }
+}
+
+export function useGraph(
+  data: AnalysisData | null, 
+  searchQuery: string, 
+  riskFilter: string, 
+  colorMode: ColorMode = 'risk',
+  layoutType: LayoutType = 'force'
+) {
   return useMemo(() => {
     if (!data) return null;
     
@@ -122,10 +158,8 @@ export function useGraph(data: AnalysisData | null, searchQuery: string, riskFil
       });
     });
     
-    // Apply force-directed layout
-    if (graph.order > 0) {
-      forceLayout(graph, { maxIterations: 100 });
-    }
+    // Apply selected layout
+    applyLayout(graph, layoutType);
     
     // Detect communities using Louvain algorithm
     if (graph.order > 1) {
@@ -155,7 +189,7 @@ export function useGraph(data: AnalysisData | null, searchQuery: string, riskFil
     });
     
     return graph;
-  }, [data, searchQuery, riskFilter, colorMode]);
+  }, [data, searchQuery, riskFilter, colorMode, layoutType]);
 }
 
 function getRiskColor(level: string): string {
