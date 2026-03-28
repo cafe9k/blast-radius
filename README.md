@@ -10,8 +10,12 @@ A powerful CLI tool for analyzing React component dependency relationships and a
 - **Blast Radius Calculation**: Calculate metrics like fan-in, fan-out, depth, breadth, and risk scores
 - **LLM-Powered Insights**: Optional AI analysis using OpenAI, Claude, DeepSeek, Gemini, or Ollama
 - **Interactive Visualization**: Generate beautiful HTML reports with Sigma.js-powered graph visualization
+  - Force-directed graph layout for optimal node positioning
+  - Community detection clustering to identify functional groupings
+  - Color modes: Risk level or Community-based coloring
 - **Multiple Output Formats**: Export results as HTML, JSON, or both
 - **Smart Caching**: Incremental analysis with file-based caching for faster re-runs
+- **Parallel Parsing**: Multi-threaded AST parsing using Worker threads for large projects
 - **Configurable**: Flexible configuration via file or environment variables
 
 ## 🏗️ Architecture
@@ -227,6 +231,9 @@ npm unlink -g blast-radius
 # Analyze current directory
 blast-radius analyze
 
+# Analyze with local server (recommended for ES modules)
+blast-radius analyze --serve
+
 # Analyze specific project
 blast-radius analyze /path/to/react/project
 
@@ -324,17 +331,40 @@ blast-radius analyze
 The generated HTML report features:
 
 - **Interactive Graph**: Zoom, pan, and explore dependencies
+- **Force-Directed Layout**: Automatic node positioning for optimal visualization
+- **Community Detection**: Louvain algorithm identifies functional groupings
+- **Color Modes**: 
+  - Risk Level: Green (low) → Red (critical)
+  - Community: Color-coded by functional grouping
 - **Node Size**: Mapped to blast radius (larger = more impact)
-- **Node Color**: Mapped to risk level (green → red)
 - **Click to Explore**: Click nodes to view dependency chains
 - **Search & Filter**: Find components by name or filter by risk level
 - **Statistics Panel**: Overview of project health metrics
+
+### Using the --serve Option
+
+When working with ES modules, browsers enforce CORS restrictions on `file://` URLs. Use `--serve` to start a local HTTP server:
+
+```bash
+blast-radius analyze --serve
+```
+
+This starts a local server and automatically opens the report in your browser.
 
 ## 🔧 CLI Commands
 
 ```bash
 # Analyze project
 blast-radius analyze [path] [options]
+
+Options:
+  -o, --output <format>  Output format (html, json) [default: html]
+  --no-cache             Disable cache for analysis
+  --no-llm               Disable LLM analysis
+  -d, --depth <level>    Analysis depth (quick, full) [default: full]
+  -c, --config <file>    Path to config file
+  --open                 Open report in browser after generation [default: true]
+  --serve                Start local HTTP server to serve the report
 
 # Manage configuration
 blast-radius config --init          # Create config file

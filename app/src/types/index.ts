@@ -40,3 +40,5 @@ export interface AIInsights {
 }
 
 export type RiskLevel = 'low' | 'medium' | 'high' | 'critical';
+
+export type ColorMode = 'risk' | 'community';

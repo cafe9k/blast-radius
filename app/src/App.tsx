@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import type { AnalysisData } from './types';
+import type { AnalysisData, ColorMode } from './types';
 import { useData } from './hooks/useData';
 import Header from './components/Layout/Header';
 import Sidebar from './components/Layout/Sidebar';
@@ -17,6 +17,7 @@ function App() {
   const [selectedComponent, setSelectedComponent] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [riskFilter, setRiskFilter] = useState<string>('all');
+  const [colorMode, setColorMode] = useState<ColorMode>('risk');
 
   if (loading) {
     return (
@@ -69,6 +70,8 @@ function App() {
             riskFilter={riskFilter}
             selectedComponent={selectedComponent}
             onComponentSelect={setSelectedComponent}
+            colorMode={colorMode}
+            onColorModeChange={setColorMode}
           />
         </div>
         

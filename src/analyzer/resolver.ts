@@ -10,8 +10,13 @@ export function resolveModulePath(
   fromFile: string,
   projectPath: string
 ): string | null {
-  // Skip node_modules imports
-  if (!importPath.startsWith('.') && !importPath.startsWith('/')) {
+  // Skip node_modules imports (bare imports without alias prefix)
+  // Allow relative paths, absolute paths, and known alias prefixes
+  const isRelative = importPath.startsWith('.');
+  const isAbsolute = importPath.startsWith('/');
+  const isAlias = importPath.startsWith('@/');
+  
+  if (!isRelative && !isAbsolute && !isAlias) {
     return null;
   }
   
@@ -24,7 +29,8 @@ export function resolveModulePath(
   
   try {
     const fromDir = path.dirname(path.join(projectPath, fromFile));
-    const resolved = resolver.sync(fromDir, importPath);
+    // resolver is already a sync function from enhancedResolve.create.sync
+    const resolved = resolver(fromDir, importPath);
     
     if (resolved) {
       // Convert back to project-relative path
@@ -51,7 +57,11 @@ function createResolver(projectPath: string) {
     aliasMap = loadTsConfigPaths(jsConfigPath, projectPath);
   }
   
-  return enhancedResolve.create({
+  // Use enhancedResolve.create.sync for synchronous resolver
+  // Note: create.sync returns a sync function directly, not a resolver object
+  const createSyncResolver = (enhancedResolve.create as any).sync;
+  
+  return createSyncResolver({
     extensions: ['.tsx', '.ts', '.jsx', '.js', '.json'],
     alias: aliasMap,
     modules: ['node_modules'],

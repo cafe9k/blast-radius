@@ -27,7 +27,7 @@ export async function generateReport(
   
   // Generate HTML report
   if (options.format.includes('html')) {
-    const htmlContent = await generateHTMLReport(result);
+    const htmlContent = await generateHTMLReport(result, outputDir);
     await fs.writeFile(options.outputPath, htmlContent);
     console.log(`  HTML report: ${options.outputPath}`);
   }
@@ -46,25 +46,44 @@ function serializeResult(result: AnalysisResult): any {
   };
 }
 
-async function generateHTMLReport(result: AnalysisResult): Promise<string> {
+async function generateHTMLReport(result: AnalysisResult, outputDir: string): Promise<string> {
   // Check if React app build exists
-  const appDistPath = path.join(__dirname, '../../app/dist');
-  const appIndexPath = path.join(appDistPath, 'index.html');
+  // Use process.cwd() to find app/dist relative to CLI installation or project root
+  const possiblePaths = [
+    path.join(__dirname, '../../app/dist'),  // Development: src/output -> app/dist
+    path.join(__dirname, '../../../app/dist'), // Production: dist -> app/dist (bundled)
+    path.resolve(process.cwd(), 'app/dist'),   // Running from project root
+  ];
+  
+  let appDistPath: string | null = null;
+  let appIndexPath: string | null = null;
+  
+  for (const p of possiblePaths) {
+    const indexPath = path.join(p, 'index.html');
+    if (await fs.pathExists(indexPath)) {
+      appDistPath = p;
+      appIndexPath = indexPath;
+      break;
+    }
+  }
   
   let html: string;
   
   // Try to use pre-built React app
-  if (await fs.pathExists(appIndexPath)) {
+  if (appIndexPath && appDistPath) {
     html = await fs.readFile(appIndexPath, 'utf-8');
     
     // Inject data as global variable
     const dataScript = `<script>window.__BLAST_RADIUS_DATA__ = ${JSON.stringify(serializeResult(result))};</script>`;
     html = html.replace('</head>', `${dataScript}</head>`);
     
-    // Copy assets if they exist
-    const assetsPath = path.join(appDistPath, 'assets');
-    if (await fs.pathExists(assetsPath)) {
-      // Assets are referenced relatively, so they'll work inline
+    // Copy assets to output directory
+    const assetsSrcPath = path.join(appDistPath, 'assets');
+    const assetsDestPath = path.join(outputDir, 'assets');
+    if (await fs.pathExists(assetsSrcPath)) {
+      // Clean old assets first
+      await fs.remove(assetsDestPath);
+      await fs.copy(assetsSrcPath, assetsDestPath, { overwrite: true });
     }
   } else {
     // Fallback: generate standalone HTML

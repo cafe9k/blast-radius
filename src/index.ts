@@ -20,6 +20,7 @@ program
   .option('-d, --depth <level>', 'Analysis depth (quick, full)', 'full')
   .option('-c, --config <file>', 'Path to config file')
   .option('--open', 'Open report in browser after generation', true)
+  .option('--serve', 'Start local HTTP server to serve the report (avoids CORS issues)', false)
   .action(analyzeCommand);
 
 program

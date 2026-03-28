@@ -3,11 +3,117 @@ import traverseDefault from '@babel/traverse';
 const traverse = (traverseDefault as any).default || traverseDefault;
 import fs from 'fs-extra';
 import path from 'path';
+import { fileURLToPath } from 'url';
+import { Worker } from 'worker_threads';
+import os from 'os';
 import type { ScannedFile } from '../scanner';
 import type { ComponentNode, ImportStatement } from '../../types/component';
 import { resolveModulePath } from '../resolver';
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Get optimal number of workers
+function getWorkerCount(): number {
+  const cpus = os.cpus().length;
+  return Math.min(Math.max(cpus, 2), 8);
+}
+
+// Chunk array into N pieces
+function chunkArray<T>(array: T[], chunks: number): T[][] {
+  const result: T[][] = [];
+  const chunkSize = Math.ceil(array.length / chunks);
+  
+  for (let i = 0; i < array.length; i += chunkSize) {
+    result.push(array.slice(i, i + chunkSize));
+  }
+  
+  return result;
+}
+
 export async function parseReactComponents(
+  files: ScannedFile[],
+  projectPath: string
+): Promise<ComponentNode[]> {
+  // For small file counts, use serial parsing
+  if (files.length < 10) {
+    return parseReactComponentsSerial(files, projectPath);
+  }
+  
+  // Try parallel parsing
+  try {
+    return await parseReactComponentsParallel(files, projectPath);
+  } catch (error) {
+    // Fallback to serial on worker error
+    console.error('Worker parsing failed, falling back to serial:', error);
+    return parseReactComponentsSerial(files, projectPath);
+  }
+}
+
+async function parseReactComponentsParallel(
+  files: ScannedFile[],
+  projectPath: string
+): Promise<ComponentNode[]> {
+  const workerCount = getWorkerCount();
+  const chunks = chunkArray(files, workerCount);
+  
+  // Get worker script path
+  const workerPath = path.join(__dirname, 'worker.js');
+  
+  // Check if worker script exists
+  const workerExists = await fs.pathExists(workerPath);
+  if (!workerExists) {
+    return parseReactComponentsSerial(files, projectPath);
+  }
+  
+  // Create workers and parse chunks in parallel
+  const workerPromises = chunks.map(chunk => {
+    return new Promise<ComponentNode[]>((resolve, reject) => {
+      const worker = new Worker(workerPath, {
+        workerData: {
+          files: chunk,
+          projectPath,
+        },
+      });
+      
+      worker.on('message', (result: ComponentNode[]) => {
+        resolve(result);
+        worker.terminate();
+      });
+      
+      worker.on('error', (error) => {
+        reject(error);
+        worker.terminate();
+      });
+      
+      worker.on('exit', (code) => {
+        if (code !== 0) {
+          reject(new Error(`Worker exited with code ${code}`));
+        }
+      });
+    });
+  });
+  
+  const results = await Promise.all(workerPromises);
+  const components = results.flat();
+  
+  // Build dependents list
+  const componentMap = new Map<string, ComponentNode>();
+  components.forEach(c => componentMap.set(c.id, c));
+  
+  for (const component of components) {
+    for (const depId of component.dependencies) {
+      const dep = componentMap.get(depId);
+      if (dep && !dep.dependents.includes(component.id)) {
+        dep.dependents.push(component.id);
+      }
+    }
+  }
+  
+  return components;
+}
+
+async function parseReactComponentsSerial(
   files: ScannedFile[],
   projectPath: string
 ): Promise<ComponentNode[]> {

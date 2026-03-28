@@ -10,10 +10,14 @@ export default defineConfig({
     emptyOutDir: true,
     rollupOptions: {
       output: {
-        manualChunks: {
-          'graphology': ['graphology', 'graphology-layout', 'graphology-layout-force'],
-          'sigma': ['sigma'],
-          'recharts': ['recharts'],
+        manualChunks: (id) => {
+          // Bundle all graphology and sigma together to avoid module resolution issues
+          if (id.includes('graphology') || id.includes('sigma')) {
+            return 'graph-sigma';
+          }
+          if (id.includes('recharts')) {
+            return 'recharts';
+          }
         },
       },
     },

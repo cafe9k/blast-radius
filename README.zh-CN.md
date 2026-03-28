@@ -10,8 +10,12 @@
 - **爆炸半径计算**：计算入度、出度、深度、广度和风险评分等指标
 - **LLM 智能分析**：可选的 AI 分析，支持 OpenAI、Claude、DeepSeek、Gemini 或 Ollama
 - **交互式可视化**：生成精美的 HTML 报告，使用 Sigma.js 驱动的图可视化
+  - 力导向图布局，自动优化节点位置
+  - 社区检测聚类，识别功能分组
+  - 颜色模式：按风险等级或社区分组着色
 - **多种输出格式**：导出结果为 HTML、JSON 或两者
 - **智能缓存**：基于文件的增量分析缓存，加快重复运行速度
+- **并行解析**：使用 Worker 线程进行多线程 AST 解析，加速大型项目分析
 - **灵活配置**：通过配置文件或环境变量进行灵活配置
 
 ## 🏗️ 架构设计
@@ -227,6 +231,9 @@ npm unlink -g blast-radius
 # 分析当前目录
 blast-radius analyze
 
+# 使用本地服务器分析（推荐，避免 CORS 问题）
+blast-radius analyze --serve
+
 # 分析指定项目
 blast-radius analyze /path/to/react/project
 
@@ -324,17 +331,40 @@ blast-radius analyze
 生成的 HTML 报告包含以下特性：
 
 - **交互式图表**：缩放、平移和探索依赖关系
+- **力导向布局**：自动优化节点位置，呈现清晰的网络结构
+- **社区检测**：使用 Louvain 算法识别功能分组
+- **颜色模式**：
+  - 风险等级：绿色（低）→ 红色（极高风险）
+  - 社区分组：按功能模块着色
 - **节点大小**：映射到爆炸半径（越大 = 影响越大）
-- **节点颜色**：映射到风险等级（绿色 → 红色）
 - **点击探索**：点击节点查看依赖链
 - **搜索与过滤**：按名称查找组件或按风险等级过滤
 - **统计面板**：项目健康指标概览
+
+### 使用 --serve 选项
+
+在处理 ES 模块时，浏览器对 `file://` URL 有 CORS 限制。使用 `--serve` 启动本地 HTTP 服务器：
+
+```bash
+blast-radius analyze --serve
+```
+
+这将启动本地服务器并自动在浏览器中打开报告。
 
 ## 🔧 CLI 命令
 
 ```bash
 # 分析项目
 blast-radius analyze [path] [options]
+
+选项:
+  -o, --output <format>  输出格式 (html, json) [默认: html]
+  --no-cache             禁用分析缓存
+  --no-llm               禁用 LLM 分析
+  -d, --depth <level>    分析深度 (quick, full) [默认: full]
+  -c, --config <file>    配置文件路径
+  --open                 分析后自动打开报告 [默认: true]
+  --serve                启动本地 HTTP 服务器提供报告
 
 # 管理配置
 blast-radius config --init          # 创建配置文件
