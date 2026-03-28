@@ -20,6 +20,49 @@ const COMMUNITY_COLORS = [
   '#EAB308', // Yellow
 ];
 
+// Detect cycles in the graph using DFS
+function detectCycles(graph: Graph): Set<string> {
+  const nodesInCycles = new Set<string>();
+  const visited = new Set<string>();
+  const recursionStack = new Set<string>();
+  const path: string[] = [];
+
+  function dfs(node: string): boolean {
+    visited.add(node);
+    recursionStack.add(node);
+    path.push(node);
+
+    let foundCycle = false;
+    graph.forEachOutNeighbor(node, (neighbor) => {
+      if (!visited.has(neighbor)) {
+        if (dfs(neighbor)) {
+          foundCycle = true;
+        }
+      } else if (recursionStack.has(neighbor)) {
+        // Found a cycle - mark all nodes in the cycle
+        const cycleStart = path.indexOf(neighbor);
+        for (let i = cycleStart; i < path.length; i++) {
+          nodesInCycles.add(path[i]);
+        }
+        nodesInCycles.add(neighbor);
+        foundCycle = true;
+      }
+    });
+
+    path.pop();
+    recursionStack.delete(node);
+    return foundCycle;
+  }
+
+  graph.forEachNode((node) => {
+    if (!visited.has(node)) {
+      dfs(node);
+    }
+  });
+
+  return nodesInCycles;
+}
+
 export function useGraph(data: AnalysisData | null, searchQuery: string, riskFilter: string, colorMode: ColorMode = 'risk') {
   return useMemo(() => {
     if (!data) return null;
@@ -46,10 +89,11 @@ export function useGraph(data: AnalysisData | null, searchQuery: string, riskFil
       
       graph.addNode(component.id, {
         label: component.name,
-        componentType: component.type, // Renamed to avoid conflict with Sigma's node type
+        componentType: component.type,
         path: component.path,
         size: Math.max(5, (metrics?.fanIn || 0) * 2 + 5),
         color: getRiskColor(metrics?.level || 'low'),
+        originalColor: getRiskColor(metrics?.level || 'low'),
         riskLevel: metrics?.level || 'low',
         riskScore: metrics?.riskScore || 0,
         fanIn: metrics?.fanIn || 0,
@@ -57,6 +101,8 @@ export function useGraph(data: AnalysisData | null, searchQuery: string, riskFil
         // Initial random positions for force layout
         x: Math.random() * 100,
         y: Math.random() * 100,
+        highlighted: false,
+        inCycle: false,
       });
     });
     
@@ -68,7 +114,9 @@ export function useGraph(data: AnalysisData | null, searchQuery: string, riskFil
         if (graph.hasNode(depId)) {
           graph.addEdge(component.id, depId, {
             color: 'rgba(0, 217, 255, 0.3)',
+            originalColor: 'rgba(0, 217, 255, 0.3)',
             size: 0.5,
+            highlighted: false,
           });
         }
       });
@@ -90,13 +138,21 @@ export function useGraph(data: AnalysisData | null, searchQuery: string, riskFil
         
         graph.setNodeAttribute(node, 'community', communityId);
         graph.setNodeAttribute(node, 'communityColor', communityColor);
+        graph.setNodeAttribute(node, 'originalCommunityColor', communityColor);
         
         // Update color based on colorMode
         if (colorMode === 'community') {
           graph.setNodeAttribute(node, 'color', communityColor);
+          graph.setNodeAttribute(node, 'originalColor', communityColor);
         }
       });
     }
+    
+    // Detect cycles and mark nodes
+    const nodesInCycles = detectCycles(graph);
+    graph.forEachNode((node) => {
+      graph.setNodeAttribute(node, 'inCycle', nodesInCycles.has(node));
+    });
     
     return graph;
   }, [data, searchQuery, riskFilter, colorMode]);
