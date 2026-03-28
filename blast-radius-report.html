@@ -1,108 +1,10 @@
-import fs from 'fs-extra';
-import path from 'path';
-import { fileURLToPath } from 'url';
-import type { AnalysisResult } from '../types/graph';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-interface ReportOptions {
-  format: ('html' | 'json')[];
-  outputPath: string;
-}
-
-export async function generateReport(
-  result: AnalysisResult,
-  options: ReportOptions
-): Promise<string> {
-  const outputDir = path.dirname(options.outputPath);
-  await fs.ensureDir(outputDir);
-  
-  // Generate JSON report
-  if (options.format.includes('json')) {
-    const jsonPath = options.outputPath.replace('.html', '.json');
-    await fs.writeJSON(jsonPath, serializeResult(result), { spaces: 2 });
-    console.log(`  JSON report: ${jsonPath}`);
-  }
-  
-  // Generate HTML report
-  if (options.format.includes('html')) {
-    const htmlContent = await generateHTMLReport(result);
-    await fs.writeFile(options.outputPath, htmlContent);
-    console.log(`  HTML report: ${options.outputPath}`);
-  }
-  
-  return options.outputPath;
-}
-
-function serializeResult(result: AnalysisResult): any {
-  return {
-    project: result.project,
-    components: result.components,
-    metrics: Array.from(result.metrics.entries()).map(([key, value]) => ({
-      ...value,
-    })),
-    aiInsights: result.aiInsights,
-  };
-}
-
-async function generateHTMLReport(result: AnalysisResult): Promise<string> {
-  // Check if React app build exists
-  const appDistPath = path.join(__dirname, '../../app/dist');
-  const appIndexPath = path.join(appDistPath, 'index.html');
-  
-  let html: string;
-  
-  // Try to use pre-built React app
-  if (await fs.pathExists(appIndexPath)) {
-    html = await fs.readFile(appIndexPath, 'utf-8');
-    
-    // Inject data as global variable
-    const dataScript = `<script>window.__BLAST_RADIUS_DATA__ = ${JSON.stringify(serializeResult(result))};</script>`;
-    html = html.replace('</head>', `${dataScript}</head>`);
-    
-    // Copy assets if they exist
-    const assetsPath = path.join(appDistPath, 'assets');
-    if (await fs.pathExists(assetsPath)) {
-      // Assets are referenced relatively, so they'll work inline
-    }
-  } else {
-    // Fallback: generate standalone HTML
-    html = await generateStandaloneHTML(result);
-  }
-  
-  return html;
-}
-
-async function generateStandaloneHTML(result: AnalysisResult): Promise<string> {
-  const riskDistribution = {
-    low: Array.from(result.metrics.values()).filter(m => m.level === 'low').length,
-    medium: Array.from(result.metrics.values()).filter(m => m.level === 'medium').length,
-    high: Array.from(result.metrics.values()).filter(m => m.level === 'high').length,
-    critical: Array.from(result.metrics.values()).filter(m => m.level === 'critical').length,
-  };
-  
-  const topRiskComponents = Array.from(result.metrics.values())
-    .sort((a, b) => b.riskScore - a.riskScore)
-    .slice(0, 10)
-    .map(m => {
-      const comp = result.components.find(c => c.id === m.componentId);
-      return `
-        <div class="component-card">
-          <div class="component-name">${comp?.name || m.componentId}</div>
-          <div class="component-score ${m.level}">${m.riskScore}</div>
-        </div>
-      `;
-    })
-    .join('');
-  
-  return `
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Blast Radius Report - ${result.project.name}</title>
+  <title>Blast Radius Report - blast-radius</title>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -211,23 +113,23 @@ async function generateStandaloneHTML(result: AnalysisResult): Promise<string> {
 <body>
   <div class="container">
     <h1>🔥 Blast Radius Report</h1>
-    <p class="subtitle">Project: ${result.project.name} • Analyzed: ${new Date(result.project.analyzedAt).toLocaleString()}</p>
+    <p class="subtitle">Project: blast-radius • Analyzed: 3/28/2026, 9:46:43 AM</p>
     
     <div class="stats-grid">
       <div class="stat-card">
-        <div class="stat-value">${result.project.componentCount}</div>
+        <div class="stat-value">24</div>
         <div class="stat-label">Total Components</div>
       </div>
       <div class="stat-card">
-        <div class="stat-value">${result.components.reduce((sum, c) => sum + c.dependencies.length, 0)}</div>
+        <div class="stat-value">0</div>
         <div class="stat-label">Total Dependencies</div>
       </div>
       <div class="stat-card">
-        <div class="stat-value">${result.components.length}</div>
+        <div class="stat-value">24</div>
         <div class="stat-label">React Components</div>
       </div>
       <div class="stat-card">
-        <div class="stat-value">${(Array.from(result.metrics.values()).reduce((sum, m) => sum + m.riskScore, 0) / result.metrics.size).toFixed(1)}</div>
+        <div class="stat-value">0.0</div>
         <div class="stat-label">Avg Risk Score</div>
       </div>
     </div>
@@ -235,46 +137,79 @@ async function generateStandaloneHTML(result: AnalysisResult): Promise<string> {
     <h2 class="section-title">Risk Distribution</h2>
     <div class="risk-distribution">
       <div class="risk-card critical">
-        <div class="risk-count">${riskDistribution.critical}</div>
+        <div class="risk-count">0</div>
         <div class="risk-label">Critical</div>
       </div>
       <div class="risk-card high">
-        <div class="risk-count">${riskDistribution.high}</div>
+        <div class="risk-count">0</div>
         <div class="risk-label">High</div>
       </div>
       <div class="risk-card medium">
-        <div class="risk-count">${riskDistribution.medium}</div>
+        <div class="risk-count">0</div>
         <div class="risk-label">Medium</div>
       </div>
       <div class="risk-card low">
-        <div class="risk-count">${riskDistribution.low}</div>
+        <div class="risk-count">24</div>
         <div class="risk-label">Low</div>
       </div>
     </div>
     
     <h2 class="section-title">Top 10 High-Risk Components</h2>
     <div class="components-list">
-      ${topRiskComponents}
+      
+        <div class="component-card">
+          <div class="component-name">Src</div>
+          <div class="component-score low">0</div>
+        </div>
+      
+        <div class="component-card">
+          <div class="component-name">Client</div>
+          <div class="component-score low">0</div>
+        </div>
+      
+        <div class="component-card">
+          <div class="component-name">Prompts</div>
+          <div class="component-score low">0</div>
+        </div>
+      
+        <div class="component-card">
+          <div class="component-name">Graph-builder</div>
+          <div class="component-score low">0</div>
+        </div>
+      
+        <div class="component-card">
+          <div class="component-name">Resolver</div>
+          <div class="component-score low">0</div>
+        </div>
+      
+        <div class="component-card">
+          <div class="component-name">Scanner</div>
+          <div class="component-score low">0</div>
+        </div>
+      
+        <div class="component-card">
+          <div class="component-name">Blast-radius</div>
+          <div class="component-score low">0</div>
+        </div>
+      
+        <div class="component-card">
+          <div class="component-name">Types</div>
+          <div class="component-score low">0</div>
+        </div>
+      
+        <div class="component-card">
+          <div class="component-name">Report-generator</div>
+          <div class="component-score low">0</div>
+        </div>
+      
+        <div class="component-card">
+          <div class="component-name">Component</div>
+          <div class="component-score low">0</div>
+        </div>
+      
     </div>
     
-    ${result.aiInsights ? `
-      <h2 class="section-title" style="margin-top: 2rem;">AI Insights</h2>
-      <div class="stat-card">
-        <p style="margin-bottom: 1rem;">${result.aiInsights.summary}</p>
-        ${result.aiInsights.risks.length > 0 ? `
-          <h3 style="color: #F97316; margin-bottom: 0.5rem;">⚠️ Risks</h3>
-          <ul style="margin-bottom: 1rem; padding-left: 1.5rem;">
-            ${result.aiInsights.risks.map(r => `<li>${r}</li>`).join('')}
-          </ul>
-        ` : ''}
-        ${result.aiInsights.suggestions.length > 0 ? `
-          <h3 style="color: #10B981; margin-bottom: 0.5rem;">💡 Suggestions</h3>
-          <ul style="padding-left: 1.5rem;">
-            ${result.aiInsights.suggestions.map(s => `<li>${s}</li>`).join('')}
-          </ul>
-        ` : ''}
-      </div>
-    ` : ''}
+    
     
     <div class="footer">
       Generated by Blast Radius • <a href="https://github.com/qing/blast-radius" style="color: #00D9FF;">GitHub</a>
@@ -282,5 +217,3 @@ async function generateStandaloneHTML(result: AnalysisResult): Promise<string> {
   </div>
 </body>
 </html>
-`;
-}
