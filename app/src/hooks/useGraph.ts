@@ -7,20 +7,20 @@ import type { AnalysisData, ColorMode } from '../types';
 
 export type LayoutType = 'force' | 'circular' | 'random';
 
-// Predefined community colors (palette for up to 12 communities)
+// Predefined community colors (GitHub Dark palette for up to 12 communities)
 const COMMUNITY_COLORS = [
-  '#8B5CF6', // Purple
-  '#06B6D4', // Cyan
-  '#F43F5E', // Rose
-  '#84CC16', // Lime
-  '#F97316', // Orange
-  '#14B8A6', // Teal
-  '#A855F7', // Violet
-  '#EF4444', // Red
-  '#22C55E', // Green
-  '#3B82F6', // Blue
-  '#EC4899', // Pink
-  '#EAB308', // Yellow
+  '#a371f7', // GitHub Purple
+  '#58a6ff', // GitHub Blue
+  '#f85149', // GitHub Red
+  '#3fb950', // GitHub Green
+  '#f0883e', // GitHub Orange
+  '#db61a2', // GitHub Pink
+  '#79c0ff', // GitHub Light Blue
+  '#d29922', // GitHub Yellow
+  '#7ee787', // GitHub Light Green
+  '#ff7b72', // GitHub Coral
+  '#d2a8ff', // GitHub Light Purple
+  '#ffa657', // GitHub Light Orange
 ];
 
 // Detect cycles in the graph using DFS
@@ -156,9 +156,9 @@ export function useGraph(
       component.dependencies.forEach(depId => {
         if (graph.hasNode(depId)) {
           graph.addEdge(component.id, depId, {
-            color: 'rgba(0, 217, 255, 0.3)',
-            originalColor: 'rgba(0, 217, 255, 0.3)',
-            size: 0.5,
+            color: 'rgba(148, 163, 184, 0.12)',
+            originalColor: 'rgba(148, 163, 184, 0.12)',
+            size: 0.3,
             highlighted: false,
           });
         }
@@ -201,10 +201,10 @@ export function useGraph(
 
 function getRiskColor(level: string): string {
   const colors = {
-    low: '#10B981',
-    medium: '#F59E0B',
-    high: '#F97316',
-    critical: '#EF4444',
+    low: '#3fb950',    // GitHub success green
+    medium: '#d29922', // GitHub warning yellow
+    high: '#f0883e',   // GitHub orange
+    critical: '#f85149', // GitHub danger red
   };
   return colors[level as keyof typeof colors] || colors.low;
 }

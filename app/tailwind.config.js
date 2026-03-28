@@ -11,25 +11,25 @@ export default {
       },
       colors: {
         primary: {
-          cyan: '#00D9FF',
-          purple: '#7C3AED',
-          green: '#10B981',
+          cyan: '#58a6ff', // GitHub accent blue
+          purple: '#a371f7', // GitHub purple
+          green: '#3fb950', // GitHub success green
         },
         background: {
-          dark: '#0F0F23',
-          medium: '#1A1A2E',
-          light: '#16213E',
+          dark: '#0d1117', // GitHub canvas.default
+          medium: '#161b22', // GitHub canvas.overlay
+          light: '#21262d', // GitHub btn.bg
         },
         text: {
-          primary: '#E2E8F0',
-          secondary: '#94A3B8',
-          tertiary: '#64748B',
+          primary: '#e6edf3', // GitHub fg.default
+          secondary: '#8b949e', // GitHub fg.muted
+          tertiary: '#7d8590', // GitHub fg.subtle
         },
         risk: {
-          low: '#10B981',
-          medium: '#F59E0B',
-          high: '#F97316',
-          critical: '#EF4444',
+          low: '#3fb950', // GitHub success
+          medium: '#d29922', // GitHub warning
+          high: '#f0883e', // GitHub orange
+          critical: '#f85149', // GitHub danger
         },
       },
       animation: {
@@ -47,8 +47,8 @@ export default {
           '100%': { transform: 'translateX(0)', opacity: '1' },
         },
         pulseGlow: {
-          '0%, 100%': { boxShadow: '0 0 5px rgba(0, 217, 255, 0.3)' },
-          '50%': { boxShadow: '0 0 20px rgba(0, 217, 255, 0.6)' },
+          '0%, 100%': { boxShadow: '0 0 5px rgba(88, 166, 255, 0.3)' },
+          '50%': { boxShadow: '0 0 20px rgba(88, 166, 255, 0.6)' },
         },
       },
     },

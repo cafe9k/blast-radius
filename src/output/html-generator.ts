@@ -102,20 +102,20 @@ async function generateStandaloneHTML(result: AnalysisResult): Promise<string> {
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
       font-family: 'JetBrains Mono', monospace;
-      background: linear-gradient(135deg, #0F0F23 0%, #1A1A2E 100%);
-      color: #E2E8F0;
+      background: #0d1117;
+      color: #e6edf3;
       padding: 2rem;
       min-height: 100vh;
     }
     .container { max-width: 1400px; margin: 0 auto; }
     h1 { 
       font-size: 2.5rem;
-      background: linear-gradient(135deg, #00D9FF 0%, #7C3AED 100%);
+      background: linear-gradient(135deg, #58a6ff 0%, #a371f7 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       margin-bottom: 0.5rem;
     }
-    .subtitle { color: #94A3B8; margin-bottom: 2rem; }
+    .subtitle { color: #8b949e; margin-bottom: 2rem; }
     .stats-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -123,20 +123,20 @@ async function generateStandaloneHTML(result: AnalysisResult): Promise<string> {
       margin-bottom: 2rem;
     }
     .stat-card {
-      background: rgba(26, 26, 46, 0.8);
+      background: rgba(22, 27, 34, 0.95);
       backdrop-filter: blur(10px);
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      border: 1px solid #30363d;
       padding: 1.5rem;
       border-radius: 12px;
     }
     .stat-value {
       font-size: 2.5rem;
       font-weight: 700;
-      background: linear-gradient(135deg, #00D9FF 0%, #7C3AED 100%);
+      background: linear-gradient(135deg, #58a6ff 0%, #a371f7 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
-    .stat-label { color: #94A3B8; margin-top: 0.5rem; font-size: 0.875rem; }
+    .stat-label { color: #8b949e; margin-top: 0.5rem; font-size: 0.875rem; }
     .risk-distribution {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
@@ -148,30 +148,31 @@ async function generateStandaloneHTML(result: AnalysisResult): Promise<string> {
       border-radius: 12px;
       text-align: center;
     }
-    .risk-card.low { background: rgba(16, 185, 129, 0.2); border: 1px solid rgba(16, 185, 129, 0.5); }
-    .risk-card.medium { background: rgba(245, 158, 11, 0.2); border: 1px solid rgba(245, 158, 11, 0.5); }
-    .risk-card.high { background: rgba(249, 115, 22, 0.2); border: 1px solid rgba(249, 115, 22, 0.5); }
-    .risk-card.critical { background: rgba(239, 68, 68, 0.2); border: 1px solid rgba(239, 68, 68, 0.5); }
+    .risk-card.low { background: rgba(63, 185, 80, 0.2); border: 1px solid rgba(63, 185, 80, 0.5); }
+    .risk-card.medium { background: rgba(210, 153, 34, 0.2); border: 1px solid rgba(210, 153, 34, 0.5); }
+    .risk-card.high { background: rgba(240, 136, 62, 0.2); border: 1px solid rgba(240, 136, 62, 0.5); }
+    .risk-card.critical { background: rgba(248, 81, 73, 0.2); border: 1px solid rgba(248, 81, 73, 0.5); }
     .risk-count { font-size: 2rem; font-weight: 700; margin-bottom: 0.5rem; }
-    .risk-card.low .risk-count { color: #10B981; }
-    .risk-card.medium .risk-count { color: #F59E0B; }
-    .risk-card.high .risk-count { color: #F97316; }
-    .risk-card.critical .risk-count { color: #EF4444; }
-    .risk-label { color: #E2E8F0; font-size: 0.875rem; text-transform: capitalize; }
+    .risk-card.low .risk-count { color: #3fb950; }
+    .risk-card.medium .risk-count { color: #d29922; }
+    .risk-card.high .risk-count { color: #f0883e; }
+    .risk-card.critical .risk-count { color: #f85149; }
+    .risk-label { color: #e6edf3; font-size: 0.875rem; text-transform: capitalize; }
+    .risk-threshold { color: #7d8590; font-size: 0.75rem; margin-top: 0.25rem; }
     .section-title {
       font-size: 1.5rem;
       font-weight: 600;
       margin-bottom: 1rem;
-      color: #00D9FF;
+      color: #58a6ff;
     }
     .components-list {
       display: grid;
       gap: 0.75rem;
     }
     .component-card {
-      background: rgba(26, 26, 46, 0.8);
+      background: rgba(22, 27, 34, 0.95);
       backdrop-filter: blur(10px);
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      border: 1px solid #30363d;
       padding: 1rem;
       border-radius: 8px;
       display: flex;
@@ -180,8 +181,8 @@ async function generateStandaloneHTML(result: AnalysisResult): Promise<string> {
       transition: all 0.3s;
     }
     .component-card:hover {
-      border-color: #00D9FF;
-      box-shadow: 0 0 20px rgba(0, 217, 255, 0.3);
+      border-color: #58a6ff;
+      box-shadow: 0 0 20px rgba(88, 166, 255, 0.3);
     }
     .component-name { font-weight: 500; }
     .component-score {
@@ -189,16 +190,16 @@ async function generateStandaloneHTML(result: AnalysisResult): Promise<string> {
       padding: 0.25rem 0.75rem;
       border-radius: 4px;
     }
-    .component-score.low { background: rgba(16, 185, 129, 0.2); color: #10B981; }
-    .component-score.medium { background: rgba(245, 158, 11, 0.2); color: #F59E0B; }
-    .component-score.high { background: rgba(249, 115, 22, 0.2); color: #F97316; }
-    .component-score.critical { background: rgba(239, 68, 68, 0.2); color: #EF4444; }
+    .component-score.low { background: rgba(63, 185, 80, 0.2); color: #3fb950; }
+    .component-score.medium { background: rgba(210, 153, 34, 0.2); color: #d29922; }
+    .component-score.high { background: rgba(240, 136, 62, 0.2); color: #f0883e; }
+    .component-score.critical { background: rgba(248, 81, 73, 0.2); color: #f85149; }
     .footer {
       margin-top: 3rem;
       padding-top: 2rem;
-      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      border-top: 1px solid #30363d;
       text-align: center;
-      color: #64748B;
+      color: #7d8590;
     }
   </style>
 </head>
@@ -231,23 +232,26 @@ async function generateStandaloneHTML(result: AnalysisResult): Promise<string> {
     </div>
     
     <h2 class="section-title">Risk Distribution</h2>
-    <p style="color: #94A3B8; margin-bottom: 1rem; font-size: 0.875rem;">Risk based on lines of code: Low (&lt;100), Medium (100-300), High (300-500), Critical (500+)</p>
     <div class="risk-distribution">
       <div class="risk-card critical">
         <div class="risk-count">${riskDistribution.critical}</div>
         <div class="risk-label">Critical</div>
+        <div class="risk-threshold">≥500 lines</div>
       </div>
       <div class="risk-card high">
         <div class="risk-count">${riskDistribution.high}</div>
         <div class="risk-label">High</div>
+        <div class="risk-threshold">300-499 lines</div>
       </div>
       <div class="risk-card medium">
         <div class="risk-count">${riskDistribution.medium}</div>
         <div class="risk-label">Medium</div>
+        <div class="risk-threshold">100-299 lines</div>
       </div>
       <div class="risk-card low">
         <div class="risk-count">${riskDistribution.low}</div>
         <div class="risk-label">Low</div>
+        <div class="risk-threshold">&lt;100 lines</div>
       </div>
     </div>
     
@@ -261,13 +265,13 @@ async function generateStandaloneHTML(result: AnalysisResult): Promise<string> {
       <div class="stat-card">
         <p style="margin-bottom: 1rem;">${result.aiInsights.summary}</p>
         ${result.aiInsights.risks.length > 0 ? `
-          <h3 style="color: #F97316; margin-bottom: 0.5rem;">⚠️ Risks</h3>
+          <h3 style="color: #f0883e; margin-bottom: 0.5rem;">⚠️ Risks</h3>
           <ul style="margin-bottom: 1rem; padding-left: 1.5rem;">
             ${result.aiInsights.risks.map(r => `<li>${r}</li>`).join('')}
           </ul>
         ` : ''}
         ${result.aiInsights.suggestions.length > 0 ? `
-          <h3 style="color: #10B981; margin-bottom: 0.5rem;">💡 Suggestions</h3>
+          <h3 style="color: #3fb950; margin-bottom: 0.5rem;">💡 Suggestions</h3>
           <ul style="padding-left: 1.5rem;">
             ${result.aiInsights.suggestions.map(s => `<li>${s}</li>`).join('')}
           </ul>
@@ -276,7 +280,7 @@ async function generateStandaloneHTML(result: AnalysisResult): Promise<string> {
     ` : ''}
     
     <div class="footer">
-      Generated by Blast Radius • <a href="https://github.com/qing/blast-radius" style="color: #00D9FF;">GitHub</a>
+      Generated by Blast Radius • <a href="https://github.com/qing/blast-radius" style="color: #58a6ff;">GitHub</a>
     </div>
   </div>
 </body>

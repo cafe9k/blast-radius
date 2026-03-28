@@ -3,7 +3,7 @@
     "name": "blast-radius",
     "path": "/Users/qing/Code/blast-radius",
     "componentCount": 29,
-    "analyzedAt": "2026-03-28T06:43:46.220Z"
+    "analyzedAt": "2026-03-28T11:33:06.469Z"
   },
   "components": [
     {
@@ -194,6 +194,88 @@
       "lineCount": 26,
       "exports": [],
       "imports": []
+    },
+    {
+      "id": "src/output/html-generator.ts",
+      "name": "Html-generator",
+      "path": "src/output/html-generator.ts",
+      "type": "react",
+      "dependencies": [
+        "src/output/serializer.ts"
+      ],
+      "dependents": [],
+      "lineCount": 290,
+      "exports": [
+        "generateHTMLReport"
+      ],
+      "imports": [
+        "fs-extra",
+        "path",
+        "url",
+        "../types",
+        "./serializer"
+      ]
+    },
+    {
+      "id": "src/output/json-generator.ts",
+      "name": "Json-generator",
+      "path": "src/output/json-generator.ts",
+      "type": "react",
+      "dependencies": [
+        "src/output/serializer.ts"
+      ],
+      "dependents": [
+        "src/output/report-generator.ts"
+      ],
+      "lineCount": 16,
+      "exports": [
+        "generateJSONReport"
+      ],
+      "imports": [
+        "fs-extra",
+        "../types",
+        "./serializer"
+      ]
+    },
+    {
+      "id": "src/output/report-generator.ts",
+      "name": "Report-generator",
+      "path": "src/output/report-generator.ts",
+      "type": "react",
+      "dependencies": [
+        "src/output/json-generator.ts",
+        "src/output/html-generator.ts"
+      ],
+      "dependents": [],
+      "lineCount": 39,
+      "exports": [
+        "generateReport"
+      ],
+      "imports": [
+        "fs-extra",
+        "path",
+        "../types",
+        "./json-generator",
+        "./html-generator"
+      ]
+    },
+    {
+      "id": "src/output/serializer.ts",
+      "name": "Serializer",
+      "path": "src/output/serializer.ts",
+      "type": "react",
+      "dependencies": [],
+      "dependents": [
+        "src/output/html-generator.ts",
+        "src/output/json-generator.ts"
+      ],
+      "lineCount": 17,
+      "exports": [
+        "serializeResult"
+      ],
+      "imports": [
+        "../types"
+      ]
     },
     {
       "id": "src/types/component.ts",
@@ -572,90 +654,6 @@
         "path",
         "commander"
       ]
-    },
-    {
-      "id": "src/output/html-generator.ts",
-      "name": "Html-generator",
-      "path": "src/output/html-generator.ts",
-      "type": "react",
-      "dependencies": [
-        "src/output/serializer.ts"
-      ],
-      "dependents": [
-        "src/output/report-generator.ts"
-      ],
-      "lineCount": 286,
-      "exports": [
-        "generateHTMLReport"
-      ],
-      "imports": [
-        "fs-extra",
-        "path",
-        "url",
-        "../types",
-        "./serializer"
-      ]
-    },
-    {
-      "id": "src/output/json-generator.ts",
-      "name": "Json-generator",
-      "path": "src/output/json-generator.ts",
-      "type": "react",
-      "dependencies": [
-        "src/output/serializer.ts"
-      ],
-      "dependents": [
-        "src/output/report-generator.ts"
-      ],
-      "lineCount": 16,
-      "exports": [
-        "generateJSONReport"
-      ],
-      "imports": [
-        "fs-extra",
-        "../types",
-        "./serializer"
-      ]
-    },
-    {
-      "id": "src/output/report-generator.ts",
-      "name": "Report-generator",
-      "path": "src/output/report-generator.ts",
-      "type": "react",
-      "dependencies": [
-        "src/output/json-generator.ts",
-        "src/output/html-generator.ts"
-      ],
-      "dependents": [],
-      "lineCount": 39,
-      "exports": [
-        "generateReport"
-      ],
-      "imports": [
-        "fs-extra",
-        "path",
-        "../types",
-        "./json-generator",
-        "./html-generator"
-      ]
-    },
-    {
-      "id": "src/output/serializer.ts",
-      "name": "Serializer",
-      "path": "src/output/serializer.ts",
-      "type": "react",
-      "dependencies": [],
-      "dependents": [
-        "src/output/html-generator.ts",
-        "src/output/json-generator.ts"
-      ],
-      "lineCount": 17,
-      "exports": [
-        "serializeResult"
-      ],
-      "imports": [
-        "../types"
-      ]
     }
   ],
   "metrics": [
@@ -705,6 +703,30 @@
       "componentId": "src/metrics/types.ts",
       "lineCount": 26,
       "riskScore": 26,
+      "level": "low"
+    },
+    {
+      "componentId": "src/output/html-generator.ts",
+      "lineCount": 290,
+      "riskScore": 290,
+      "level": "medium"
+    },
+    {
+      "componentId": "src/output/json-generator.ts",
+      "lineCount": 16,
+      "riskScore": 16,
+      "level": "low"
+    },
+    {
+      "componentId": "src/output/report-generator.ts",
+      "lineCount": 39,
+      "riskScore": 39,
+      "level": "low"
+    },
+    {
+      "componentId": "src/output/serializer.ts",
+      "lineCount": 17,
+      "riskScore": 17,
       "level": "low"
     },
     {
@@ -808,30 +830,6 @@
       "lineCount": 101,
       "riskScore": 101,
       "level": "medium"
-    },
-    {
-      "componentId": "src/output/html-generator.ts",
-      "lineCount": 286,
-      "riskScore": 286,
-      "level": "medium"
-    },
-    {
-      "componentId": "src/output/json-generator.ts",
-      "lineCount": 16,
-      "riskScore": 16,
-      "level": "low"
-    },
-    {
-      "componentId": "src/output/report-generator.ts",
-      "lineCount": 39,
-      "riskScore": 39,
-      "level": "low"
-    },
-    {
-      "componentId": "src/output/serializer.ts",
-      "lineCount": 17,
-      "riskScore": 17,
-      "level": "low"
     }
   ],
   "aiInsights": null

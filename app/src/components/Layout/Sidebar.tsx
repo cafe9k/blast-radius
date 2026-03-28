@@ -61,7 +61,12 @@ export default function Sidebar({
         <h2 className="text-sm font-semibold text-text-secondary mb-3">Risk Distribution</h2>
         
         <div className="space-y-2">
-          {(['critical', 'high', 'medium', 'low'] as const).map(level => (
+          {([
+            { level: 'critical' as const, label: 'Critical', threshold: '≥500 lines' },
+            { level: 'high' as const, label: 'High', threshold: '300-499 lines' },
+            { level: 'medium' as const, label: 'Medium', threshold: '100-299 lines' },
+            { level: 'low' as const, label: 'Low', threshold: '<100 lines' },
+          ]).map(({ level, label, threshold }) => (
             <button
               key={level}
               onClick={() => onRiskFilterChange(riskFilter === level ? 'all' : level)}
@@ -72,7 +77,18 @@ export default function Sidebar({
                   : 'bg-background-dark/30 border border-white/5 hover:border-white/20'
               )}
             >
-              <span className="text-sm capitalize text-text-primary">{level}</span>
+              <div className="flex flex-col items-start">
+                <span className={cn(
+                  'text-sm font-semibold capitalize',
+                  level === 'critical' && 'text-risk-critical',
+                  level === 'high' && 'text-risk-high',
+                  level === 'medium' && 'text-risk-medium',
+                  level === 'low' && 'text-risk-low',
+                )}>
+                  {label}
+                </span>
+                <span className="text-xs text-text-tertiary">{threshold}</span>
+              </div>
               <span className={cn(
                 'text-sm font-semibold',
                 level === 'critical' && 'text-risk-critical',

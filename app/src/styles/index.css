@@ -22,23 +22,23 @@ body {
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-/* Neon glow effects */
+/* Neon glow effects - GitHub style */
 .neon-cyan {
-  box-shadow: 0 0 5px #00D9FF,
-              0 0 10px #00D9FF,
-              0 0 20px #00D9FF;
+  box-shadow: 0 0 5px #58a6ff,
+              0 0 10px #58a6ff,
+              0 0 20px #58a6ff;
 }
 
 .neon-purple {
-  box-shadow: 0 0 5px #7C3AED,
-              0 0 10px #7C3AED,
-              0 0 20px #7C3AED;
+  box-shadow: 0 0 5px #a371f7,
+              0 0 10px #a371f7,
+              0 0 20px #a371f7;
 }
 
 .neon-green {
-  box-shadow: 0 0 5px #10B981,
-              0 0 10px #10B981,
-              0 0 20px #10B981;
+  box-shadow: 0 0 5px #3fb950,
+              0 0 10px #3fb950,
+              0 0 20px #3fb950;
 }
 
 /* Scrollbar styling */

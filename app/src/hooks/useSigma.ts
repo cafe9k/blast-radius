@@ -40,7 +40,7 @@ export function useSigma(
       });
       
       g.forEachEdge((edge) => {
-        g.setEdgeAttribute(edge, 'color', 'rgba(0, 217, 255, 0.3)');
+        g.setEdgeAttribute(edge, 'color', 'rgba(148, 163, 184, 0.12)');
         g.setEdgeAttribute(edge, 'highlighted', false);
         g.setEdgeAttribute(edge, 'hidden', false);
       });
@@ -76,13 +76,13 @@ export function useSigma(
       // Highlight edges in the dependency chain
       g.forEachEdge((edge, { source, target }) => {
         if (neighbors.has(source) && neighbors.has(target)) {
-          g.setEdgeAttribute(edge, 'color', '#00D9FF');
+          g.setEdgeAttribute(edge, 'color', '#58a6ff'); // GitHub accent blue
           g.setEdgeAttribute(edge, 'highlighted', true);
           g.setEdgeAttribute(edge, 'size', 1.5);
         } else {
-          g.setEdgeAttribute(edge, 'color', 'rgba(0, 217, 255, 0.1)');
+          g.setEdgeAttribute(edge, 'color', 'rgba(148, 163, 184, 0.05)');
           g.setEdgeAttribute(edge, 'highlighted', false);
-          g.setEdgeAttribute(edge, 'size', 0.3);
+          g.setEdgeAttribute(edge, 'size', 0.2);
         }
       });
     }
@@ -137,7 +137,7 @@ export function useSigma(
       labelSize: 12,
       labelColor: { color: '#E2E8F0' },
       defaultNodeColor: '#00D9FF',
-      defaultEdgeColor: 'rgba(0, 217, 255, 0.3)',
+      defaultEdgeColor: 'rgba(148, 163, 184, 0.12)',
       edgeLabelFont: 'JetBrains Mono',
       renderEdgeLabels: false,
       hideEdgesOnMove: false,
